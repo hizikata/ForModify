@@ -1,0 +1,208 @@
+<div>
+  <!-- 简略信息展示区域 list -->
+  <div *ngIf="mouldModelDto!==null" class="tab2-simple-information">
+    <span style="margin-right: .5rem;">
+      <nz-tag nzColor="orange">模具编号:</nz-tag>{{mouldModelDto.MouldId}}
+    </span>
+    <span style="margin-right: .5rem;">
+      <nz-tag nzColor="orange">模具名称:</nz-tag>{{mouldModelDto.MouldName}}
+    </span>
+    <span style="margin-right: .5rem;">
+      <nz-tag nzColor="orange">计划完成日期:</nz-tag>{{mouldModelDto.PlanOverMachiningDate|date:'yyyy-MM-dd'}}
+    </span>
+    <span style="margin-right: .5rem;">
+      <nz-tag nzColor="orange">状态:</nz-tag>{{mouldModelDto.State}}
+    </span>
+  </div>
+  <div *ngIf="mouldModelDto===null">
+    <p>
+      模具对象为空
+    </p>
+  </div>
+
+  <!-- 程序单列表 -->
+  <div>
+    <div class="division-border-table">
+      <nz-table class="table-striped" #nzTable [nzData]="cncProgramDataSet" [nzBordered]="true" [nzPageSize]="10"
+        [nzLoading]="cncDataLoading" [nzScroll]="{x:'1600px',y:'450px'}" [nzFrontPagination]="false" [nzShowPagination]="false">
+        <thead>
+          <tr>
+            <th nzWidth="80px" nzLeft="0px">编辑</th>
+            <th nzWidth="160px">工件编号</th>
+            <th nzWidth="100px">程序名称</th>
+            <th nzWidth="100px">状态</th>
+            <th nzWidth="80px">类型</th>
+            <th nzWidth="100px">刀具</th>
+            <th nzWidth="100px">刀具编号</th>
+            <th nzWidth="100px">刀具长度</th>
+            <th nzWidth="100px">刀刃长度</th>
+            <th nzWidth="80px">进给</th>
+            <th nzWidth="80px">深度</th>
+            <th nzWidth="100px">余量</th>
+            <th nzWidth="100px">转速</th>
+            <th nzWidth="100px">加工时间</th>
+            <th nzWidth="100px">说明</th>
+            <th nzWidth="100px">备注</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of nzTable.data">
+            <td nzLeft="0px">
+              <button nzType="primary" (click)="stateOperate(item)" nzSize="small" nz-button><i nz-icon type="edit"
+                  theme="outline"></i></button>
+            </td>
+            <td>{{item.WorkpieceId}}</td>
+            <td>{{item.ProgramNam}}</td>
+            <td>{{item.State}}</td>
+            <td>{{item.Type}}</td>
+            <td>{{item.Knife}}</td>
+            <td>{{item.KnifeNum}}</td>
+            <td>{{item.KinfeLength}}</td>
+            <td>{{item.KinfeBladeLength}}</td>
+            <td>{{item.Feed}}</td>
+            <td>{{item.Depth}}</td>
+            <td>{{item.Surplus}}</td>
+            <td>{{item.Speed}}</td>
+            <td>{{item.MachiningTime}}</td>
+            <td>{{item.Remarks}}</td>
+            <td>{{item.Note}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<!-- 程序单状态编辑 -->
+<nz-drawer [nzVisible]="isShowStateOperateModal" nzPlacement="right" nzTitle="程序单状态编辑" nzWidth="860px" (nzOnClose)="handleStartOperateCancel()">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="4" nzOffset="2">
+      <nz-card [nzCover]="completeCoverTemplate">
+        <ng-template #completeCoverTemplate>
+          <img alt="备刀完成" src="../../../../assets/image/complete.png" />
+        </ng-template>
+        <button nzType="primary" nzSize="large" (click)="swordComplete()" nz-button>备刀完成</button>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-card [nzCover]="beginCoverTemplate">
+        <ng-template #beginCoverTemplate>
+          <img alt="开始加工" src="../../../../assets/image/start.png" />
+        </ng-template>
+        <button nzType="primary" nzSize="large" (click)="startProgress()" nz-button>开始加工</button>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-card [nzCover]="okCoverTemplate">
+        <ng-template #okCoverTemplate>
+          <img alt="加工完成" src="../../../../assets/image/ok.png" />
+        </ng-template>
+        <button nzType="primary" nzSize="large" (click)="finishProgresss()" nz-button>加工完成</button>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-card [nzCover]="returnCoverTemplate">
+        <ng-template #returnCoverTemplate>
+          <img alt="已还刀" src="../../../../assets/image/return.jpg" />
+        </ng-template>
+        <button nzType="primary" nzSize="large" (click)="returnProgresss()" nz-button>已还刀</button>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-card [nzCover]="cancelCoverTemplate">
+        <ng-template #cancelCoverTemplate>
+          <img alt="清楚状态" src="../../../../assets/image/clear.jpg" />
+        </ng-template>
+        <button nzType="primary" nzSize="large" (click)="clearProgresss()" nz-button>清除状态</button>
+      </nz-card>
+    </div>
+  </div>
+  <div style="display:inline">
+    <label>备注：</label>
+    <input nz-input [(ngModel)]="cNCProgramMmdel.Note" placeholder="">
+  </div>
+  <div style="margin:1rem 0;">
+    <h3>开始加工前验证</h3>
+    <!-- 开始加工前验证 -->
+    <form nz-form *ngIf="validateBeforeStartProgressFormData!==null" [formGroup]="validateBeforeStartProgressForm"
+      nzLayout="horizontal">
+      <nz-form-item>
+        <table frame="box" rules="all" style="width:80%;">
+          <tr>
+            <th class="tableTitle">工作步骤</th>
+            <th class="tableContent">操作员签名</th>
+          </tr>
+          <tr>
+            <td>
+              <nz-form-label nzFor="StandardValidation" nzRequired>装夹、基准确认</nz-form-label>
+            </td>
+            <td>
+              <nz-form-control>
+                <nz-select style="width:200px" nzShowSearch formControlName="StandardValidation" nzPlaceHolder="请选择员工工号"
+                  nzAllowClear>
+                  <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="validateBeforeStartProgressForm.get('StandardValidation').dirty&&validateBeforeStartProgressForm.get('StandardValidation').errors">
+                  员工工号不能为空
+                </nz-form-explain>
+              </nz-form-control>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <nz-form-label nzFor="Calibration" nzRequired>校正(分中)工作</nz-form-label>
+            </td>
+            <td>
+              <nz-form-control>
+                <nz-select style="width:200px" nzShowSearch formControlName="Calibration" nzPlaceHolder="请选择员工工号"
+                  nzAllowClear>
+                  <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="validateBeforeStartProgressForm.get('Calibration').dirty&&validateBeforeStartProgressForm.get('Calibration').errors">
+                  员工工号不能为空
+                </nz-form-explain>
+              </nz-form-control>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <nz-form-label nzFor="CoordinateAxis" nzRequired>X/Y/Z碰数</nz-form-label>
+            </td>
+            <td>
+              <nz-form-control>
+                <nz-select style="width:200px" nzShowSearch formControlName="CoordinateAxis" nzPlaceHolder="请选择员工工号"
+                  nzAllowClear>
+                  <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="validateBeforeStartProgressForm.get('CoordinateAxis').dirty&&validateBeforeStartProgressForm.get('CoordinateAxis').errors">
+                  员工工号不能为空
+                </nz-form-explain>
+              </nz-form-control>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <nz-form-label nzFor="CheckOnceMore" nzRequired>检查再次确认</nz-form-label>
+            </td>
+            <td>
+              <nz-form-control>
+                <nz-select style="width:200px" nzShowSearch formControlName="CheckOnceMore" nzPlaceHolder="请选择员工工号"
+                  nzAllowClear>
+                  <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="validateBeforeStartProgressForm.get('CheckOnceMore').dirty&&validateBeforeStartProgressForm.get('CheckOnceMore').errors">
+                  员工工号不能为空
+                </nz-form-explain>
+              </nz-form-control>
+            </td>
+          </tr>
+        </table>
+      </nz-form-item>
+    </form>
+  </div>
+</nz-drawer>

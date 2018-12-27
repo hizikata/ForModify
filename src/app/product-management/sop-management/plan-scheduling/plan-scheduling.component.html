@@ -1,0 +1,214 @@
+<nz-tabset [(nzSelectedIndex)]="selectedIndex">
+  <nz-tab [nzTitle]="'计划排程 '">
+    <!-- 计划排程 -->
+    <div class="whole-area">
+      <!-- 搜索区域 -->
+      <div class="query-info">
+        <nz-alert nzType="info" [nzMessage]="alertTemplate">
+          <ng-template #alertTemplate>
+            <!-- 检验项查询表单 -->
+            <form nz-form [formGroup]="workpieceQueryForm" (ngSubmit)="submitWorkpieceQueryForm($event)" nzLayout="horizontal">
+              <nz-form-item>
+                <!-- <nz-form-label nzSpan="3">项目代码</nz-form-label> -->
+                <nz-form-control nzSpan="3">
+                  <input nz-input formControlName="MouldId" placeholder="模具编号">
+                </nz-form-control>
+                <!-- <nz-form-label nzSpan="3">项目名称</nz-form-label> -->
+                <nz-form-control nzSpan="3">
+                  <input nz-input formControlName="MouldName" placeholder="模具名称">
+                </nz-form-control>
+                <nz-form-control nzSpan="3">
+                  <input nz-input formControlName="MouldType" placeholder="接单类型">
+                </nz-form-control>
+                <nz-form-control nzSpan="3">
+                  <input nz-input formControlName="MachineId" placeholder="机台">
+                </nz-form-control>
+                <nz-form-control nzSpan="3">
+                  <input nz-input formControlName="State" placeholder="当前状态">
+                </nz-form-control>
+                <nz-form-control nzSpan="9">
+                  <button class="operate-button" nzType="primary" type="submit" nz-button><i nz-icon type="search"
+                      theme="outline"></i>查询</button>
+                  <button class="operate-button" nzType="danger" (click)="resetWorkpieceQueryForm($event)" nz-button><i
+                      nz-icon type="redo" theme="outline"></i>清除</button>
+                </nz-form-control>
+
+              </nz-form-item>
+            </form>
+          </ng-template>
+        </nz-alert>
+      </div>
+      <!-- 信息展示区域 -->
+      <div class='display-information-area'>
+        <nz-table class="table-striped" #nzTable [nzData]="workpieceDataSet" [nzBordered]="true" [nzShowPagination]="false"
+          [nzTitle]="tableTitleTemplate" nzSize="small" [nzLoading]="workpieceDataLoading" [nzFrontPagination]="false"
+          [nzScroll]="{x:'1800px', y: '55vh' }">
+          <thead (nzSortChange)="sort($event)" nzSingleSort>
+            <tr>
+              <th nzWidth="80px" nzLeft="0px">查看SOP</th>
+              <th nzWidth="160px" nzShowSort nzSortKey="MouldId">模具编号</th>
+              <th nzWidth="120px" nzShowSort nzSortKey="MouldName">模具名称</th>
+              <th nzWidth="140px" nzShowSort nzSortKey="MouldType">接单类型</th>
+              <th nzWidth="140px" nzShowSort nzSortKey="MouldPlangDate">模具计划完成</th>
+              <th nzWidth="160px" nzShowSort nzSortKey="WorkpieceId">程序单编号</th>
+              <th nzWidth="180px" nzShowSort nzSortKey="WorkpieceName">程序单名称</th>
+              <th nzWidth="100px" nzShowSort nzSortKey="PlanOverMachiningDate">交期</th>
+              <th nzWidth="100px" nzShowSort nzSortKey="MachiningProcessId">工序代码</th>
+              <th nzWidth="80px" nzShowSort nzSortKey="MachineId">机台</th>
+              <th nzWidth="80px" nzShowSort nzSortKey="OpUser">人员</th>
+              <th nzWidth="100px" nzShowSort nzSortKey="State">状态</th>
+              <th nzWidth="120px" nzRight="180px">CNC班长</th>
+              <th nzWidth="120px" nzRight="60px">计划员</th>
+              <th nzWidth="60px" nzRight="0px">编辑</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of nzTable.data">
+              <td nzLeft="0px">
+                <a (click)="OnProgramOperation(item)">
+                  <span class="text-icon-primary" title="查看PDF"><i nz-icon type="search"></i>查看
+                  </span>
+                </a>
+              </td>
+              <td>{{item.MouldId}}</td>
+              <td>{{item.MouldName}}</td>
+              <td>{{item.MouldType}}</td>
+              <td>{{item.MouldPlangDate|date:'yyyy-MM-dd'}}</td>
+              <td>{{item.WorkpieceId}}</td>
+              <td>{{item.WorkpieceName}}</td>
+              <td>{{item.PlanOverMachiningDate|date:'yyyy-MM-dd'}}</td>
+              <td>{{item.MachiningProcessId}}</td>
+              <td>{{item.MachineId}}</td>
+              <td>{{item.OpUser}}</td>
+              <td>{{item.State}}</td>
+              <td nzRight="180px">
+                <button nzType="primary" (click)="distributeTask(item)" nz-button>分配任务</button>
+              </td>
+              <td nzRight="60px">
+                <button nzType="primary" (click)="editWorkpieceDto(item)" nz-button>程序单计划</button>
+              </td>
+              <td nzRight="0px">
+                <a (click)="openCncTab(item)">
+                  <span class="text-icon-primary" title="查看CNC程序单">列表
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <ng-template #tableTitleTemplate>
+          <nz-tag nzColor="red">当前数据总数：</nz-tag>
+          {{workpieceDataSet.length}}条
+        </ng-template>
+      </div>
+    </div>
+  </nz-tab>
+  <nz-tab *ngIf="workpieceTransmitDto!==null" [nzTitle]="titleTemplate">
+    <ng-template #titleTemplate>
+      <div>
+        程序单列表
+        <i nz-icon type="close-circle" [theme]="'twotone'" [twoToneColor]="'red'" (click)="closeTab()"></i>
+      </div>
+    </ng-template>
+    <app-cnc-program-management [operatingWorkpieceDto]="workpieceTransmitDto"></app-cnc-program-management>
+  </nz-tab>
+</nz-tabset>
+
+
+<!-- CNC班长分配人员机台 -->
+<nz-modal [(nzVisible)]="isShowDistributeTaskModal" [nzTitle]="'分配任务'" [nzClosable]="false" [nzWidth]="520" [nzContent]="modalDistributeTaskContent"
+  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+  <ng-template #modalDistributeTaskContent>
+    <form *ngIf="distributeTaskFormData!==null" nz-form [formGroup]="distributeTaskForm" (ngSubmit)="submitDistributeTaskForm($event)"
+      nzLayout="horizontal">
+      <nz-form-item>
+        <nz-form-label nzSpan="6" nzFor="MachineId" nzRequired>机器编号:</nz-form-label>
+        <nz-form-control nzSpan="18">
+          <nz-select style="width:200px" nzShowSearch formControlName="MachineId" nzPlaceHolder="请输入机器编号" nzAllowClear>
+            <nz-option *ngFor="let item of machineDataSet" [nzLabel]="item.Name" [nzValue]="item.Name">
+            </nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="distributeTaskForm.get('MachineId').dirty&&distributeTaskForm.get('MachineId').errors">
+            机器编号不能为空
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="6" nzFor="OpUser" nzRequired>员工工号:</nz-form-label>
+        <nz-form-control nzSpan="18">
+          <nz-select style="width:200px" nzShowSearch formControlName="OpUser" nzPlaceHolder="请输入员工工号" nzAllowClear>
+            <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+            </nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="distributeTaskForm.get('OpUser').dirty&&distributeTaskForm.get('OpUser').errors">
+            员工工号不能为空
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzOffset="6">
+          <button nzType="primary" type="submit" nz-button [disabled]="!distributeTaskForm.valid">确认</button>
+          <button style="margin-left:4rem;" (click)="resetDistributeTaskForm($event)" nzType="danger" nz-button>关闭</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+</nz-modal>
+
+<!-- 计划员设定交期和工序 -->
+<nz-modal [(nzVisible)]="isShowEditWorkpieceModal" [nzTitle]="'程序单计划'" [nzWidth]="520" [nzClosable]="false" [nzContent]="modalEditWorkFormContent"
+  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+  <ng-template #modalEditWorkFormContent>
+    <div *ngIf="editWorkpieceForm!==null">
+      <form nz-form [formGroup]="editWorkpieceForm" (ngSubmit)="submitEditWorkForm($event, editWorkpieceForm.value)"
+        nzLayout="horizontal">
+        <nz-form-item>
+          <nz-form-label nzSpan="6" nzFor="PlanOverMachiningDate" nzRequired>计划完成日期</nz-form-label>
+          <nz-form-control nzSpan="18">
+            <nz-date-picker formControlName="PlanOverMachiningDate"></nz-date-picker>
+            <nz-form-explain *ngIf="editWorkpieceForm.get('PlanOverMachiningDate').dirty&&editWorkpieceForm.get('PlanOverMachiningDate').errors">
+              计划完成时间不能为空
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzSpan="6" nzFor="MachiningProcessId" nzRequired>工序代码</nz-form-label>
+          <nz-form-control nzSpan="18">
+            <!-- FIXED:需要接口验证工序代码是否存在 -->
+            <!-- <input style="width:200px" nz-input formControlName="MachiningProcessId" placeholder="请输入工序代码"> -->
+            <nz-select style="width:200px" nzShowSearch formControlName="MachiningProcessId" nzPlaceHolder="请输入工序代码"
+              nzAllowClear>
+              <nz-option *ngFor="let item of processListDataSet" nzLabel={{item.Code}} [nzValue]="item.Code">
+              </nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="editWorkpieceForm.get('MachiningProcessId').dirty&&editWorkpieceForm.get('MachiningProcessId').errors">
+              工序代码不能为空
+              <!-- <ng-container *ngIf="editWorkpieceForm.get('MachiningProcessId').hasError('required')">
+                工序代码不能为空
+              </ng-container>
+              <ng-container *ngIf="editWorkpieceForm.get('MachiningProcessId').hasError('nullReference')">
+                工序代码不存在
+              </ng-container>
+              <ng-container *ngIf="editWorkpieceForm.get('MachiningProcessId').pending">
+                验证中...
+              </ng-container> -->
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzOffset="6">
+            <button nzType="primary" type="submit" nz-button [disabled]="!editWorkpieceForm.valid">确定</button>
+            <button style="margin-left:4rem;" (click)="resetEditWorkForm($event)" nzType="danger" nz-button>关闭</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </ng-template>
+</nz-modal>
+
+<!-- pdf展示界面 -->
+<nz-drawer [nzVisible]="isShowPdfModal" nzPlacement="right" (nzOnClose)="handlePdfOk()" nzWidth="1000px">
+  <div *ngIf="isShowPdfModal" class="pdf-show-area">
+    <pdf-viewer [src]="pdfSrc" [render-text]="false" [fit-to-page]="false"></pdf-viewer>
+  </div>
+</nz-drawer>

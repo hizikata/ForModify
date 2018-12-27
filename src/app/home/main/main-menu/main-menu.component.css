@@ -1,0 +1,85 @@
+ :host ::ng-deep .trigger {
+   color: whitesmoke;
+   font-size: 18px;
+   line-height: 64px;
+   padding: 0 24px;
+   cursor: pointer;
+   /* transition: color .3s; */
+ }
+
+ :host ::ng-deep .trigger:hover {
+   color: #1890ff;
+ }
+
+ :host ::ng-deep .logo-title {
+   color: #fff;
+   font-size: 1rem;
+   margin-left: 0.5rem;
+   /* text-shadow: 0.08em 0.05em #2db7f5; */
+ }
+
+ :host ::ng-deep .logo {
+   height: 1.5rem;
+   /* background: rgba(255, 255, 255, .2); */
+   margin: .5rem 0 .5rem .5rem;
+ }
+
+ a {
+   color: whitesmoke;
+ }
+
+ a:hover {
+   color: #10AEFF;
+ }
+
+ .wholeLayoutArea {
+   height: 100vh;
+   margin: 0px;
+ }
+
+ .router-content-area {
+   padding: 24px;
+   background: #fff;
+   min-height: 40rem;
+ }
+
+ .content-area {
+   margin: 0px;
+   overflow-y: hidden;
+ }
+
+ .header-area {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-start;
+   align-items: center;
+ }
+
+ .header-user-area {
+   margin-left: auto;
+ }
+
+ .header-navigation-area {
+   display: flex;
+   justify-content: flex-start;
+   font-size: 1.0rem;
+   margin-left: 5rem;
+ }
+
+ .header-navigation-item {
+   margin-left: 3rem;
+ }
+
+
+ .full-screen-link {
+   opacity: 1;
+ }
+
+ .fullScreenIcon {
+   position: fixed;
+   width: 3rem;
+   height: 3rem;
+   right: 3px;
+   bottom: 15px;
+   color: #18EF2D;
+ }

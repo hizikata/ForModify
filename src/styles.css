@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+.html .body {
+  height: 100vh;
+  width: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+/*表格奇偶行变色*/
+.table-striped table tbody tr:nth-child(even) {
+  background: rgba(210, 226, 234, 0.8);
+}

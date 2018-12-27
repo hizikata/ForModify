@@ -1,0 +1,90 @@
+.whole-area {
+  height: 100vh;
+  margin: 0px;
+}
+
+.card-area {
+  width: 100%;
+  height: 100%;
+}
+
+.whole-content {
+  margin: 0px;
+}
+
+
+.operate-area {
+  display: flex;
+  flex-direction: row;
+}
+
+.opearte-button-area {
+  margin-left: 2rem;
+  margin-right: 0.5rem;
+}
+
+.division-border {
+  height: 180px;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0 0 .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid grey;
+}
+
+.divsion-border-qrcode {
+  flex: 0 0 12rem;
+}
+
+.division-border-table {
+  border: 1px solid grey;
+}
+
+.pdf-show-area {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.simple-information-area {
+  flex: 0 0 20rem;
+  font-size: 1.0rem;
+  font-weight: bold;
+}
+
+.division-border-list {
+  flex: 1 1 auto;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+  height: 170px;
+}
+
+.text-icon-default {
+  margin: 2px 3px;
+  color: darkcyan;
+}
+
+.text-icon-primary {
+  margin: 2px 3px;
+  color: blue;
+}
+
+.text-icon-danger {
+  margin: 2px 3px;
+  color: red;
+}
+
+.text-icon-success {
+  margin: 2px 3px;
+  color: green;
+}
+
+.tabTitle {
+  width: 30%;
+}
+
+.tabContent {
+  width: 70%;
+}

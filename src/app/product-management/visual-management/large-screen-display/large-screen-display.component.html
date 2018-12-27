@@ -1,0 +1,79 @@
+<!-- 大屏展示 -->
+<!-- 状态监控 -->
+<div class="whole-area">
+  <!-- 机器列表 -->
+  <div class="machine-list-area">
+    <nz-list [nzDataSource]="equipmentInfoDataSet" [nzLoading]="isEquipmentListLoading" [nzRenderItem]="item" [nzGrid]="{gutter:2, xs: 24, sm: 12, md: 8, lg: 6, xl: 4, xxl: 3}">
+      <ng-template #item let-item>
+        <nz-list-item class='nz-list-item' [nzContent]="nzContent">
+          <ng-template #nzContent>
+            <!-- 设置card的内边距 -->
+            <nz-card [nzBodyStyle]="{'padding':'1.0rem .1rem;'}">
+              <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate"></nz-card-meta>
+            </nz-card>
+            <ng-template #titleTemplate>
+              <!-- 颜色转换 -->
+              <span class="machine-info-title" [style.background-color]="getBackgroundColor(item.State.State)">{{item.Name}}
+              </span>
+              <img class="machine-image" alt="机台图片" src="../../../../assets/image/machine.jpg" />
+
+            </ng-template>
+            <!-- <ng-template #avatarTemplate>
+              <nz-avatar nzSrc="../../../../assets/image/machine.jpg"></nz-avatar>
+            </ng-template> -->
+
+            <ng-template #descriptionTemplate>
+              <div style="height:16rem;">
+                <div class="display-info-text">
+                  <span class='display-info-title'>模具:</span>
+                  {{item.State.Program}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>程序单:</span>
+                  {{item.State.WorkpieceId}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>程序单进度:</span>
+                  {{item.State.Progress}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>开始:</span>
+                  {{item.State.StartTime|date:'MM-dd HH:mm'}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>剩余:</span>
+                  {{item.State.SurplusTime}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>耗时:</span>
+                  {{item.State.DisplayTakenTime}}</div>
+                <div class="display-info-text">
+                  <span class='display-info-title'>备刀剩余:</span>
+                  {{item.State.KnifeTime|date:'MM-dd HH:mm'}}</div>
+              </div>
+            </ng-template>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+
+  <!-- 状态指示栏 -->
+  <div class="state-bar-area">
+
+    <span class="state-display ">
+      <span class="machine-state alart-background-color">报警:</span>
+      <span class="state-display-text">{{alertCount}}台/{{entireCount}}台</span>
+    </span>
+
+    <span class="state-display">
+      <span class="machine-state standby-background-color">待机:</span>
+      <span class="state-display-text">{{standbyCount}}台/{{entireCount}}台</span>
+    </span>
+
+    <span class="state-display">
+      <span class="machine-state powerOn-background-color">运行:</span>
+      <span class="state-display-text">{{powerOnCount}}台/{{entireCount}}台</span>
+    </span>
+
+    <span class="state-display">
+      <span class="machine-state powerOff-background-color">停机:</span>
+      <span class="state-display-text">{{powerOffCount}}台/{{entireCount}}台</span>
+    </span>
+  </div>
+</div>

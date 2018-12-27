@@ -1,0 +1,166 @@
+.whole-area {
+  min-height: 800px;
+  height: 100%;
+  margin: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.nz-list-item {
+  /* height: 21rem; */
+  margin: 3px;
+  padding: 0;
+}
+
+.machine-list-area {
+  background-color: #efefef;
+  flex: 1 1 20rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: center; */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+
+.state-bar-area {
+  background: #efefef;
+  border: 2 solid black;
+  flex: 0 0 4rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.machine-info-title {
+  font-size: 2rem;
+}
+
+.state-display {
+  margin-right: 2rem;
+}
+
+.state-display-text {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.machine-image {
+  width: 40%;
+  height: 30%;
+}
+
+.alart-background-color {
+  background-color: #f50
+}
+
+.standby-background-color {
+  background-color: #efef00
+}
+
+.powerOn-background-color {
+  background-color: #87d068
+}
+
+.powerOff-background-color {
+  background-color: #808080
+}
+
+.machine-state {
+  padding: 0 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: black;
+  border-radius: 0.5rem;
+}
+
+.display-info-text {
+  color: black;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.display-info-title {
+  font-weight: bold;
+}
+
+
+@media(max-width:1900px) {
+  .display-info-text {
+    color: black;
+    font-size: 1.0rem;
+    /* line-height: 0.8rem; */
+  }
+}
+
+@media(max-width:1200px) {
+  .state-display {
+    margin-right: 1rem;
+  }
+
+  .state-display-text {
+    font-size: 1.5rem;
+    font-weight: normal;
+  }
+
+  .machine-state {
+    padding: 0 0.5rem;
+    font-size: 1.5rem;
+    font-weight: normal;
+  }
+}
+
+/* 调整顶部状态栏字体大小 */
+@media(max-width:992px) {
+  .state-display {
+    margin-right: 1rem;
+  }
+
+  .state-display-text {
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+
+  .machine-state {
+    padding: 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+}
+
+@media(max-width:768px) {
+  .state-display {
+    margin-right: 0.5rem;
+  }
+
+  .state-display-text {
+    font-size: 1.2rem;
+  }
+
+  .machine-state {
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+}
+
+@media(max-width:576px) {
+  .state-display {
+    margin-right: 0.2rem;
+  }
+
+  .state-display-text {
+    font-size: 1rem;
+  }
+
+  .machine-state {
+    padding: 0rem;
+    font-size: 1.0rem;
+    font-weight: normal;
+  }
+}

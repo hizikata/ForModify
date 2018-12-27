@@ -1,0 +1,138 @@
+<nz-layout class="wholeLayoutArea">
+  <nz-header>
+    <div class="header-area">
+      <div>
+        <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+      </div>
+      <!-- 主菜单标题 -->
+      <div>
+        <a href="http://tianqi.cn.ningboexport.com/" target="_blank">
+          <img class="logo" src="../../../../assets/image/logo.jpg">
+          <span style="font-size: 1.2rem;margin-left: .5rem;">管理平台</span>
+        </a>
+        <!-- <span class="logo-title">{{productTitle}}</span> -->
+      </div>
+      <div class="header-navigation-area">
+        <div class="header-navigation-item">
+          <a routerLink="./MouldManagement">
+            <span>模具目录</span></a>
+        </div>
+        <div class="header-navigation-item">
+          <a routerLink="./PlanScheduling">
+            <span>计划排程</span></a>
+        </div>
+        <div class="header-navigation-item">
+          <a routerLink="./LargeScreenDisplay">
+            <span>大屏展示</span></a>
+        </div>
+      </div>
+      <div class="header-user-area">
+        <ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'">
+          <li nz-submenu>
+            <span title>
+              <nz-avatar nzIcon="user" style="background-color:#10AEFF;"></nz-avatar>
+              <span>
+                {{currentLoginUserName}}
+              </span>
+            </span>
+            <ul>
+              <li nz-menu-item="" routerLinkActive="active" (click)="logout()">
+                <i nz-icon type="logout" theme="outline"></i>更改用户
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzCollapsible [nzCollapsedWidth]=0 [(nzCollapsed)]="isCollapsed" [nzTrigger]=null>
+      <div>
+        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+          <li nz-submenu>
+            <span title><i nz-icon type="database" theme="outline"></i><span class="nav-text">SOP管理</span></span>
+            <ul>
+              <li nz-menu-item>
+                <a routerLink='MouldManagement'><i nz-icon type="profile" theme="outline"></i>模具目录</a>
+              </li>
+              <li nz-menu-item>
+                <a routerLink="PlanScheduling"><i nz-icon type="schedule" theme="outline"></i>计划排程</a>
+              </li>
+
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="setting" theme="outline"></i><span class="nav-text">目视化管理</span></span>
+            <ul>
+
+              <li nz-menu-item>
+                <a routerLink="LargeScreenDisplay"><i nz-icon type="desktop" theme="outline"></i>大屏展示看板</a>
+              </li>
+              <li nz-menu-item>
+                <a routerLink="MachineUseRatio">机台利用率看板</a>
+              </li>
+              <li nz-menu-item>
+                <a>设备故障看板</a>
+              </li>
+              <li nz-menu-item>
+                <a>人员效率看板</a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nz-sider>
+    <!-- 主展示界面 -->
+    <nz-content class="content-area">
+      <div>
+        <!-- 路由模块 -->
+        <router-outlet></router-outlet>
+        <!-- 全屏按钮 -->
+        <a (click)="fullScreen()" class="full-screen-link" title="点击我可以进行全屏哦!">
+          <div *ngIf="!isFullScreen" class="fullScreenIcon"> <i nz-icon type="arrows-alt" theme="outline"></i></div>
+          <div *ngIf="isFullScreen" class="fullScreenIcon"> <i nz-icon type="shrink" theme="outline"></i></div>
+        </a>
+      </div>
+    </nz-content>
+
+  </nz-layout>
+</nz-layout>
+<!-- 登录验证 -->
+<nz-modal [(nzVisible)]="isShowValidateLoginUser" [nzTitle]="'用户验证'" [nzWidth]="350" [nzClosable]="false" [nzContent]="modalValidateLoginUserContent"
+  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+  <ng-template #modalValidateLoginUserContent>
+    <form *ngIf="validateLoginUserFormData!==null" nz-form [formGroup]="validateLoginUserForm" (ngSubmit)="submitValidateLoginUserForm(validateLoginUserForm.value)"
+      nzLayout="horizontal">
+      <nz-form-item>
+        <nz-form-label nzSpan="6" nzFor="UserName" nzRequired>用户名:</nz-form-label>
+        <nz-form-control nzSpan="18">
+          <!-- <input style="width:200px" nz-input formControlName="UserName" placeholder="请选择用户名"> -->
+          <nz-select style="width:200px" formControlName="UserName" name="value" nzPlaceHolder="" nzAllowClear>
+            <nz-option *ngFor="let item of loginUserList" [nzLabel]="item.UserName" [nzValue]="item.UserName">
+            </nz-option>
+          </nz-select>
+
+          <nz-form-explain *ngIf="validateLoginUserForm.get('UserName').dirty&&validateLoginUserForm.get('UserName').errors">
+            用户名不能为空
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="6" nzFor="Password" nzRequired>密码:</nz-form-label>
+        <nz-form-control nzSpan="18">
+          <input style="width:200px" autofocus type="password" nz-input formControlName="Password" placeholder="请输入密码">
+          <nz-form-explain *ngIf="validateLoginUserForm.get('Password').dirty&&validateLoginUserForm.get('Password').errors">
+            密码能为空
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzOffset="6">
+          <button nzType="primary" type="submit" nz-button [disabled]="!validateLoginUserForm.valid">登录</button>
+          <button style="margin-left:4rem;" (click)="resetValidateLoginUserForm($event)" nzType="danger" nz-button>关闭</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+</nz-modal>
