@@ -168,7 +168,7 @@ export class WorkpieceModel {
 export class WorkpieceQueryDto {
     constructor(
         /**模具Id */
-        public MouldId: string,
+        public WorkpieceId: string,
         /**模具名称 */
         public MouldName: string,
         /**模具类型(接单类型) */

@@ -95,7 +95,7 @@ export class PlanSchedulingComponent implements OnInit {
 
   createWorkpieceQueryDto(dto: WorkpieceQueryDto): void {
     this.workpieceQueryForm = this.fb.group({
-      MouldId: [dto.MouldId],
+      WorkpieceId: [dto.WorkpieceId],
       MouldName: [dto.MouldName],
       MouldType: [dto.MouldType],
       State: [dto.State],
@@ -117,9 +117,9 @@ export class PlanSchedulingComponent implements OnInit {
           let dataArray = this.workpieceDataSet;
           this.workpieceDataLoading = true;
           /**模具Id筛选 */
-          if (!isNull(dto.MouldId) && dto.MouldId.trim() !== '') {
+          if (!isNull(dto.WorkpieceId) && dto.WorkpieceId.trim() !== '') {
             dataArray = dataArray.filter(item => {
-              return item.MouldId.indexOf(dto.MouldId) !== -1;
+              return item.WorkpieceId.indexOf(dto.WorkpieceId) !== -1;
             });
           }
           /**模具名称筛选 */

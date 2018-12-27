@@ -11,7 +11,7 @@
               <nz-form-item>
                 <!-- <nz-form-label nzSpan="3">项目代码</nz-form-label> -->
                 <nz-form-control nzSpan="3">
-                  <input nz-input formControlName="MouldId" placeholder="模具编号">
+                  <input nz-input formControlName="WorkpieceId" placeholder="模具编号">
                 </nz-form-control>
                 <!-- <nz-form-label nzSpan="3">项目名称</nz-form-label> -->
                 <nz-form-control nzSpan="3">
@@ -46,7 +46,7 @@
           <thead (nzSortChange)="sort($event)" nzSingleSort>
             <tr>
               <th nzWidth="80px" nzLeft="0px">查看SOP</th>
-              <th nzWidth="160px" nzShowSort nzSortKey="MouldId">模具编号</th>
+              <!-- <th nzWidth="160px" nzShowSort nzSortKey="MouldId">模具编号</th> -->
               <th nzWidth="120px" nzShowSort nzSortKey="MouldName">模具名称</th>
               <th nzWidth="140px" nzShowSort nzSortKey="MouldType">接单类型</th>
               <th nzWidth="140px" nzShowSort nzSortKey="MouldPlangDate">模具计划完成</th>
@@ -55,7 +55,7 @@
               <th nzWidth="100px" nzShowSort nzSortKey="PlanOverMachiningDate">交期</th>
               <th nzWidth="100px" nzShowSort nzSortKey="MachiningProcessId">工序代码</th>
               <th nzWidth="80px" nzShowSort nzSortKey="MachineId">机台</th>
-              <th nzWidth="80px" nzShowSort nzSortKey="OpUser">人员</th>
+              <th nzWidth="80px" nzShowSort nzSortKey="OpUser">姓名</th>
               <th nzWidth="100px" nzShowSort nzSortKey="State">状态</th>
               <th nzWidth="120px" nzRight="180px">CNC班长</th>
               <th nzWidth="120px" nzRight="60px">计划员</th>
@@ -70,7 +70,7 @@
                   </span>
                 </a>
               </td>
-              <td>{{item.MouldId}}</td>
+              <!-- <td>{{item.MouldId}}</td> -->
               <td>{{item.MouldName}}</td>
               <td>{{item.MouldType}}</td>
               <td>{{item.MouldPlangDate|date:'yyyy-MM-dd'}}</td>
