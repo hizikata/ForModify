@@ -1,0 +1,12 @@
+##############################
+## Folders                  ##
+
+node_modules
+dist
+
+
+##############################
+## File conf            ##
+
+package-lock.json
+.vscode/launch.json
