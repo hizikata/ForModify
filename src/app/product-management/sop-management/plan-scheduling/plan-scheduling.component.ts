@@ -116,7 +116,7 @@ export class PlanSchedulingComponent implements OnInit {
           this.workpieceDataSet = result;
           let dataArray = this.workpieceDataSet;
           this.workpieceDataLoading = true;
-          /**模具Id筛选 */
+          /**程序单编号筛选 */
           if (!isNull(dto.WorkpieceId) && dto.WorkpieceId.trim() !== '') {
             dataArray = dataArray.filter(item => {
               return item.WorkpieceId.indexOf(dto.WorkpieceId) !== -1;

@@ -54,6 +54,7 @@
               <th nzWidth="180px" nzShowSort nzSortKey="WorkpieceName">程序单名称</th>
               <th nzWidth="100px" nzShowSort nzSortKey="PlanOverMachiningDate">交期</th>
               <th nzWidth="100px" nzShowSort nzSortKey="MachiningProcessId">工序代码</th>
+              <th nzWidth="100px" nzShowSort nzSortKey="PlanMachingTime">总工时</th>
               <th nzWidth="80px" nzShowSort nzSortKey="MachineId">机台</th>
               <th nzWidth="80px" nzShowSort nzSortKey="OpUser">姓名</th>
               <th nzWidth="100px" nzShowSort nzSortKey="State">状态</th>
@@ -78,6 +79,7 @@
               <td>{{item.WorkpieceName}}</td>
               <td>{{item.PlanOverMachiningDate|date:'yyyy-MM-dd'}}</td>
               <td>{{item.MachiningProcessId}}</td>
+              <td>{{item.PlanMachingTime}}</td>
               <td>{{item.MachineId}}</td>
               <td>{{item.OpUser}}</td>
               <td>{{item.State}}</td>

@@ -14,6 +14,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { QRCodeModule } from 'angular2-qrcode';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlanSchedulingComponent } from './sop-management/plan-scheduling/plan-scheduling.component';
+import { StaffEfficiencyDisplayComponent } from './visual-management/staff-efficiency-display/staff-efficiency-display.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { PlanSchedulingComponent } from './sop-management/plan-scheduling/plan-s
     CncProgramManagementComponent,
     MachineUseRatioComponent,
     PlanSchedulingComponent,
+    StaffEfficiencyDisplayComponent,
   ],
   imports: [
     CommonModule,

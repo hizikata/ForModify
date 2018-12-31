@@ -7,14 +7,21 @@ import { WorkpieceManagementComponent } from '../product-management/sop-manageme
 // tslint:disable-next-line:max-line-length
 import { CncProgramManagementComponent } from '../product-management/sop-management/cnc-program-management/cnc-program-management.component';
 import { PlanSchedulingComponent } from '../product-management/sop-management/plan-scheduling/plan-scheduling.component';
+// tslint:disable-next-line:max-line-length
+import { StaffEfficiencyDisplayComponent } from '../product-management/visual-management/staff-efficiency-display/staff-efficiency-display.component';
 
 export const homeRoutes: Routes = [
   { path: 'MachineUseRatio', component: MachineUseRatioComponent },
   { path: 'MouldManagement', component: MouldManagementComponent },
   { path: 'WorkpieceManagement', component: WorkpieceManagementComponent },
   { path: 'CncProgramManagement', component: CncProgramManagementComponent },
+  // 大屏展示
   { path: 'LargeScreenDisplay', component: LargeScreenDisplayComponent },
+  // 计划排程
   { path: 'PlanScheduling', component: PlanSchedulingComponent },
+  { path: 'MachineUseRadio', component: MachineUseRatioComponent },
+  // 人员效率看板组件
+  { path: 'StaffEfficiency', component: StaffEfficiencyDisplayComponent }
 ];
 
 @NgModule({

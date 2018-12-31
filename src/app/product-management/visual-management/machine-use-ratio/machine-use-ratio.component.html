@@ -1,11 +1,29 @@
 <!--机台利用率 -->
 <div class="whole-area">
-  <div nz-row>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]="option1"></div>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]='option2'></div>
+  <div>
+    <nz-alert nzType="info" [nzMessage]="alertQueryTemplate">
+      <ng-template #alertQueryTemplate>
+        <form nz-form [formGroup]="machineOeeQueryForm" nzLayout="horizontal">
+          <nz-form-item>
+            <nz-form-control [nzSpan]="4">
+              <nz-date-picker nzspan formControlName="StartDate" nzPlaceHolder="选择开始日期" nzShowTime></nz-date-picker>
+            </nz-form-control>
+            <nz-form-control [nzSpan]="4">
+              <nz-date-picker formControlName="EndDate" nzPlaceHolder="选择结束日期" nzShowTime></nz-date-picker>
+            </nz-form-control>
+            <nz-form-control [nzSpan]="4">
+              <button nz-button nzType="primary">查询</button>
+              <button nz-button nzType="danger">清除</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </ng-template>
+    </nz-alert>
   </div>
   <div nz-row>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]="option3"></div>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]="option4"></div>
+    <div class="row-one" nz-col nzSpan="12" echarts [options]="option1"></div>
+    <div class="row-one" nz-col nzSpan="12" echarts [options]="option2"></div>
+  </div>
+  <div nz-row>
   </div>
 </div>

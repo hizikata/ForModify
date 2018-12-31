@@ -37,7 +37,7 @@ export class MachineStateModel {
         /**剩余时间 */
         public SurplusTime: string,
         /**备刀剩余时间 */
-        public KnifeTime: Date,
+        public KnifeTime: string,
         public ProgramRunTime: Date,
         public Progress: string,
         public YieldGood: number,
@@ -151,6 +151,8 @@ export class WorkpieceModel {
         public PlanOverMachiningDate: Date,
         /**实际完成时间 */
         public OverMachiningDate: Date,
+        /**计划加工耗时 格式：小时：分钟：秒 */
+        public PlanMachingTime: string,
         /**上传的文件名称 */
         public SopFileName: string,
         /**文件Id 在MongoDB中的ObjectId */
@@ -284,6 +286,40 @@ export class ValidationBeforeStartProgressDto {
         public CoordinateAxis: string,
         /**检查再次确认 */
         public CheckOnceMore: string,
+    ) { }
+}
+
+
+
+/**
+ * 机台利用率看板
+ */
+export class MachineOeeModel {
+    constructor(
+        /**设备编号 */
+        public MachineId: string,
+        /**设备名称 */
+        public Name: string,
+        /**运行时间 */
+        public RunTime: number,
+        /**待机时间 */
+        public StandbyTime: number,
+        /**停机时间 */
+        public PowerOffTime: number,
+        /**报警时间 */
+        public AlertTime: number,
+    ) { }
+}
+
+
+/**
+ * 机台利用率查询
+ */
+
+export class MachineOeeQuery {
+    constructor(
+        public StartDate: Date,
+        public EndDate: Date,
     ) { }
 }
 

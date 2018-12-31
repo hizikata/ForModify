@@ -152,7 +152,7 @@ export class WorkpieceManagementComponent implements OnInit {
    */
   initWorkpieceDto(): WorkpieceModel {
     // tslint:disable-next-line:max-line-length
-    return new WorkpieceModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new Date());
+    return new WorkpieceModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new Date());
   }
 
   /**
@@ -431,7 +431,7 @@ export class WorkpieceManagementComponent implements OnInit {
                   this.programInfoDataSet = r;
                 });
               } else {
-                MsgHelper.ShowErrorModal(this.modalService, '工件信息提交失败！');
+                MsgHelper.ShowErrorModal(this.modalService, `工件信息提交失败！${result.ErrorMessage}`);
               }
             }, error => {
               const msg = (error as HttpErrorResponse).message;

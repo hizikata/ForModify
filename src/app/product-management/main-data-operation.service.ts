@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiUrlsService } from '../common-use/api-urls.service';
-import { EquipmentInfoDto, MouldModel, WorkpieceModel, CNCProgramModel, LoginUserDto, MachineModel, ProcessModel } from '../data-models';
+// tslint:disable-next-line:max-line-length
+import { EquipmentInfoDto, MouldModel, WorkpieceModel, CNCProgramModel, LoginUserDto, MachineModel, ProcessModel, MachineOeeModel } from '../data-models';
 import { OpResult } from '../common-use/op-result';
 
 @Injectable({
@@ -114,6 +115,9 @@ export class MainDataOperationService {
     return this.apiUrl.GetPp('SopManage/GetSopFile', { params: { 'objid': code } });
   }
 
+  /**
+   * 获取sop文件的url
+   */
   public GetSopFileUrl(): string {
     return 'http://192.168.86.101:8080/api/SopManage/GetSopFile?objid=';
   }
@@ -147,5 +151,15 @@ export class MainDataOperationService {
    */
   public GetAllMachineList(): Observable<MachineModel[]> {
     return this.apiUrl.GetPp('Machines/GetAllMachineList');
+  }
+
+
+  /**
+   * 获取机台利用率列表
+   * @param startTime 起始时间
+   * @param endTime 结束时间
+   */
+  public GetMachineOee(startTime: string, endTime: string): Observable<MachineOeeModel[]> {
+    return this.apiUrl.GetPp('Machines/GetMachineOee', { params: { t1: startTime, t2: endTime } });
   }
 }
