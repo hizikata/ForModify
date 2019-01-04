@@ -323,4 +323,27 @@ export class MachineOeeQuery {
     ) { }
 }
 
+/**
+ * 饼图的对象模型
+ */
+export class PieDataTemplate {
+    constructor(
+        /**值 */
+        public value: number,
+        /**显示名称 */
+        public name: string,
+        /**颜色对象 */
+        public itemStyle: ColorTemplate,
+    ) { }
+}
+
+/**
+ * 颜色模型
+ */
+export class ColorTemplate {
+    constructor(
+        public color: string,
+    ) { }
+}
+
 

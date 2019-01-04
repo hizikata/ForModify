@@ -4,5 +4,13 @@
 }
 
 .row-one {
-  height: 45vh;
+  height: 30vh;
+}
+
+.select-row-index {
+  position: fixed;
+  width: 100px;
+  right: 280px;
+  top: 80px;
+  z-index: 999;
 }

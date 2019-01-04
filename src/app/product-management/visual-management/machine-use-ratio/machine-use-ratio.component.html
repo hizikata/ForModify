@@ -1,19 +1,33 @@
 <!--机台利用率 -->
 <div class="whole-area">
+
+  <nz-select class="select-row-index" [(ngModel)]="selectedRowIndex" name="selectedRowIndex" nzPlaceHolder="选择机台组别"
+    nzAllowClear (ngModelChange)="updateBarDatasource(selectedRowIndex)">
+    <nz-option *ngFor="let item of rowIndexArray" [nzLabel]="item.rowName" [nzValue]="item.rowNum">
+    </nz-option>
+  </nz-select>
+  <div nz-row>
+    <div class="row-one" nz-col nzSpan="6" echarts [options]="pieDataSource"></div>
+    <div class="row-one" nz-col nzSpan="18" echarts [options]="barDataSource">
+    </div>
+  </div>
   <div>
     <nz-alert nzType="info" [nzMessage]="alertQueryTemplate">
       <ng-template #alertQueryTemplate>
-        <form nz-form [formGroup]="machineOeeQueryForm" nzLayout="horizontal">
+        <form nz-form [formGroup]="machineOeeQueryForm" nzLayout="horizontal" (ngSubmit)="submitQueryForm($event)">
           <nz-form-item>
             <nz-form-control [nzSpan]="4">
               <nz-date-picker nzspan formControlName="StartDate" nzPlaceHolder="选择开始日期" nzShowTime></nz-date-picker>
+              <nz-form-explain *ngIf="machineOeeQueryForm.get('StartDate').dirty&&machineOeeQueryForm.get('StartDate').errors">请选择开始日期</nz-form-explain>
             </nz-form-control>
             <nz-form-control [nzSpan]="4">
               <nz-date-picker formControlName="EndDate" nzPlaceHolder="选择结束日期" nzShowTime></nz-date-picker>
+              <nz-form-explain *ngIf="machineOeeQueryForm.get('EndDate').dirty&&machineOeeQueryForm.get('EndDate').errors">请选择结束日期</nz-form-explain>
             </nz-form-control>
             <nz-form-control [nzSpan]="4">
-              <button nz-button nzType="primary">查询</button>
-              <button nz-button nzType="danger">清除</button>
+              <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!machineOeeQueryForm.valid"><i
+                  nz-icon type="search" theme="outline"></i>查询</button>
+              <button nz-button nzType="danger" (click)="resetQueryForm()"><i nz-icon type="reload" theme="outline"></i>清除</button>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -21,9 +35,28 @@
     </nz-alert>
   </div>
   <div nz-row>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]="option1"></div>
-    <div class="row-one" nz-col nzSpan="12" echarts [options]="option2"></div>
-  </div>
-  <div nz-row>
+    <nz-table #nzTable [nzData]="machineOeeDataSet" [nzPageSize]="10" [nzScroll]="{y:'300px'}" [nzBordered]=true
+      [nzLoading]="machineOeeDataLoading" [nzFrontPagination]=false [nzShowPagination]=false>
+      <thead>
+        <tr>
+          <!-- <th>设备编号</th> -->
+          <th nzWidth=100px>设备名称</th>
+          <th nzWidth=100px>运行时间</th>
+          <th nzWidth=100px>待机时间</th>
+          <th nzWidth=100px>停机时间</th>
+          <th nzWidth=100px>报警时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of nzTable.data">
+          <!-- <td>{{item.MachineId}}</td> -->
+          <td>{{item.Name}}</td>
+          <td>{{item.RunTime}}</td>
+          <td>{{item.StandbyTime}}</td>
+          <td>{{item.PowerOffTime}}</td>
+          <td>{{item.AlertTime}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
   </div>
 </div>

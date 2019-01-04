@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MachineOeeModel, MachineOeeQuery } from 'src/app/data-models';
+import { MachineOeeModel, MachineOeeQuery, PieDataTemplate } from 'src/app/data-models';
 import { MainDataOperationService } from '../../main-data-operation.service';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormHelper } from 'src/app/common-use/form-helper';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MsgHelper } from 'src/app/common-use/msg-helper';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-machine-use-ratio',
@@ -11,6 +15,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class MachineUseRatioComponent implements OnInit {
 
+  machineOeeDataLoading = false;
   machineOeeDataSet: MachineOeeModel[] = [];
   startDate = new Date(Date.now());
   endDate = new Date(Date.now());
@@ -18,8 +23,32 @@ export class MachineUseRatioComponent implements OnInit {
   machineOeeQueryForm: FormGroup = null;
   machineOeeQueryFormData: MachineOeeQuery = null;
 
-  public option1: any;
-  public option2: any;
+  selectedRowIndex = 0;
+  /**将机台分为四组 */
+  rowIndexArray = [
+    {
+      rowName: '第一组',
+      rowNum: 0
+    },
+    {
+      rowName: '第二组',
+      rowNum: 1
+    },
+    {
+      rowName: '第三组',
+      rowNum: 2
+    },
+    {
+      rowName: '第四组',
+      rowNum: 3
+    },
+  ];
+
+
+  /**饼图数据源 */
+  pieDataSource: any;
+  /**柱状图数据源 */
+  barDataSource: any;
   labelOption = {
     normal: {
       show: true,
@@ -38,10 +67,20 @@ export class MachineUseRatioComponent implements OnInit {
     }
   };
 
+  /**运行时间 */
+  runTime = 0;
+  /**待机时间 */
+  standbyTime = 0;
+  /**停机时间 */
+  poweroffTime = 0;
+  /**报警时间 */
+  alertTime = 0;
+
   constructor(
     public dataOperate: MainDataOperationService,
     public datePiepe: DatePipe,
     public fb: FormBuilder,
+    public modalService: NzModalService,
   ) {
 
   }
@@ -49,85 +88,59 @@ export class MachineUseRatioComponent implements OnInit {
 
     this.machineOeeQueryFormData = this.initMachineOeeQuery();
     this.createMachineOeeQeeryForm(this.machineOeeQueryFormData);
-    this.getMachineOeeArray();
+    this.barDataSource = this.initBarDatasource();
+    this.pieDataSource = this.initPieDataSource();
+    // this.getMachineOeeArray();
+  }
 
-    this.option1 = {
-      backgroundColor: '#2c343c',
-      // backgroundColor: 'white',
+  initMachineOeeQuery(): MachineOeeQuery {
+    return new MachineOeeQuery(null, null);
+  }
 
+  initPieDataSource(): any {
+    const pieDatasource = {
       title: {
-        text: 'Customized Pie',
-        left: 'center',
-        top: 20,
-        textStyle: {
-          color: '#ccc'
-        }
+        text: '机台利用率展示',
+        subtext: '饼状图',
+        x: 'center'
       },
-
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
-
-      visualMap: {
-        show: false,
-        min: 80,
-        max: 600,
-        inRange: {
-          colorLightness: [0, 1]
-        }
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['运行时间', '待机时间', '停机时间', '报警时间']
       },
       series: [
         {
           name: '访问来源',
           type: 'pie',
           radius: '55%',
-          center: ['50%', '50%'],
-          data: [
-            { value: 335, name: '直接访问' },
-            { value: 310, name: '邮件营销' },
-            { value: 274, name: '联盟广告' },
-            { value: 235, name: '视频广告' },
-            { value: 400, name: '搜索引擎' }
-          ].sort(function (a, b) { return a.value - b.value; }),
-          roseType: 'radius',
-          label: {
-            normal: {
-              textStyle: {
-                color: 'rgba(255, 255, 255, 0.3)'
-              }
-            }
-          },
-          labelLine: {
-            normal: {
-              lineStyle: {
-                color: 'rgba(255, 255, 255, 0.3)'
-              },
-              smooth: 0.2,
-              length: 10,
-              length2: 20
-            }
-          },
+          center: ['50%', '60%'],
+          data: [],
           itemStyle: {
-            normal: {
-              color: '#c23531',
-              shadowBlur: 200,
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
-          },
-
-          animationType: 'scale',
-          animationEasing: 'elasticOut',
-          animationDelay: function (idx) {
-            return Math.random() * 200;
           }
         }
       ]
     };
+    return pieDatasource;
+  }
 
-    this.option2 = {
-      backgroundColor: 'white',   // '#2c343c',
-      color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+  initBarDatasource(): any {
+    const barDatasource = {
+      // title: {
+      //   text: '各状态耗时对比',
+      //   x: 'center'
+      // },
+      backgroundColor: '#F0F2F5',   // '#2c343c',
+      color: ['#87d068', '#808080', '#efef00', '#f50'],
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -135,7 +148,7 @@ export class MachineUseRatioComponent implements OnInit {
         }
       },
       legend: {
-        data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+        data: ['运行', '待机', '停机', '报警']
       },
       toolbox: {
         show: true,
@@ -155,7 +168,7 @@ export class MachineUseRatioComponent implements OnInit {
         {
           type: 'category',
           axisTick: { show: false },
-          data: ['2012', '2013', '2014', '2015', '2016']
+          data: []
         }
       ],
       yAxis: [
@@ -165,36 +178,33 @@ export class MachineUseRatioComponent implements OnInit {
       ],
       series: [
         {
-          name: 'Forest',
+          name: '运行',
           type: 'bar',
           barGap: 0,
           label: this.labelOption,
-          data: [320, 332, 301, 334, 390]
+          data: []
         },
         {
-          name: 'Steppe',
+          name: '待机',
           type: 'bar',
           label: this.labelOption,
-          data: [220, 182, 191, 234, 290]
+          data: []
         },
         {
-          name: 'Desert',
+          name: '停机',
           type: 'bar',
           label: this.labelOption,
-          data: [150, 232, 201, 154, 190]
+          data: []
         },
         {
-          name: 'Wetland',
+          name: '报警',
           type: 'bar',
           label: this.labelOption,
-          data: [98, 77, 101, 99, 40]
+          data: []
         }
       ]
     };
-  }
-
-  initMachineOeeQuery(): MachineOeeQuery {
-    return new MachineOeeQuery(null, null);
+    return barDatasource;
   }
 
   createMachineOeeQeeryForm(dto: MachineOeeQuery): void {
@@ -204,16 +214,98 @@ export class MachineUseRatioComponent implements OnInit {
     });
   }
 
+  submitQueryForm(): void {
+    FormHelper.YGSubmitForm(this.machineOeeQueryFormData, this.machineOeeQueryForm, dto => {
+      this.machineOeeDataLoading = true;
+      this.getMachineOeeArray(dto);
+    });
+  }
 
-  getMachineOeeArray(): void {
-    const startDate = this.datePiepe.transform(this.startDate, 'yyyy/MM/dd HH:mm:ss');
-    const endDate = this.datePiepe.transform(this.endDate, 'yyyy/MM/dd HH:mm:ss');
+  resetQueryForm(): void {
+    this.machineOeeQueryFormData = null;
+    this.machineOeeQueryForm.reset();
+  }
+
+
+  getMachineOeeArray(dto: MachineOeeQuery): void {
+    const startDate = this.datePiepe.transform(dto.StartDate, 'yyyy/MM/dd HH:mm:ss');
+    console.log(`start:${startDate}`);
+    const endDate = this.datePiepe.transform(dto.EndDate, 'yyyy/MM/dd HH:mm:ss');
+    console.log(`endDate:${endDate}`);
     this.dataOperate.GetMachineOee(startDate, endDate).subscribe(result => {
       if (result !== null && result.length !== 0) {
         this.machineOeeDataSet = result;
+        this.getAllKindOfTime();
       } else {
         this.machineOeeDataSet = [];
       }
+      this.machineOeeDataLoading = false;
+    }, error => {
+      const msg = (error as HttpErrorResponse).message;
+      MsgHelper.ShowErrorModal(this.modalService, `查询机台时间时与服务器通信失败${msg}`);
     });
+  }
+
+  getAllKindOfTime(): void {
+    if (this.machineOeeDataSet.length !== 0) {
+      let runTime = 0, standbyTime = 0, poweroffTime = 0, alertTime = 0;
+      this.machineOeeDataSet.forEach(item => {
+        runTime += item.RunTime;
+        standbyTime += item.StandbyTime;
+        poweroffTime += item.PowerOffTime;
+        alertTime += item.AlertTime;
+      });
+      this.runTime = runTime;
+      this.standbyTime = standbyTime;
+      this.poweroffTime = poweroffTime;
+      this.alertTime += alertTime;
+      this.updatePieDataSource();
+      this.updateBarDatasource(0);
+    }
+  }
+
+  updatePieDataSource(): void {
+    const dataArray: PieDataTemplate[] = [];
+    dataArray.push(new PieDataTemplate(this.alertTime, '报警时间', { color: '#f50' }));
+    dataArray.push(new PieDataTemplate(this.poweroffTime, '停机时间', { color: '#efef00' }));
+    dataArray.push(new PieDataTemplate(this.standbyTime, '待机时间', { color: '#808080' }));
+    dataArray.push(new PieDataTemplate(this.runTime, '运行时间', { color: '#87d068' }));
+    const option1 = this.initPieDataSource();
+    option1.series[0].data = dataArray.sort(function (a, b) { return a.value - b.value; });
+    this.pieDataSource = option1;
+  }
+
+  updateBarDatasource(index: number): void {
+    if (this.machineOeeDataSet !== null && this.machineOeeDataSet.length !== 0) {
+      // 每组显示6个数据
+      const power = 6;
+      const machineArray = [];
+      const runTimeArray = [];
+      const standbyTimeArray = [];
+      const poweroffTimeArray = [];
+      const alertTimeArray = [];
+      this.machineOeeDataSet.forEach(item => {
+        machineArray.push(item.Name);
+        runTimeArray.push(item.RunTime);
+        standbyTimeArray.push(item.StandbyTime);
+        poweroffTimeArray.push(item.PowerOffTime);
+        alertTimeArray.push(item.AlertTime);
+      });
+      const option2 = this.initBarDatasource();
+
+      if (this.machineOeeDataSet.length >= index * power + power - 1) {
+        option2.xAxis[0].data = machineArray.slice(index * power, index * power + power);
+        option2.series[0].data = runTimeArray.slice(index * power, index * power + power);
+        option2.series[1].data = standbyTimeArray.slice(index * power, index * power + power);
+        option2.series[2].data = poweroffTimeArray.slice(index * power, index * power + power);
+        option2.series[3].data = alertTimeArray.slice(index * power, index * power + power);
+        this.barDataSource = option2;
+      } else {
+        MsgHelper.ShowErrorModal(this.modalService, '超出Machine数组的边界，请选择其他分组');
+        return;
+      }
+    } else {
+      MsgHelper.ShowErrorModal(this.modalService, '机台耗时数据为空，请先获取机台数据！');
+    }
   }
 }
