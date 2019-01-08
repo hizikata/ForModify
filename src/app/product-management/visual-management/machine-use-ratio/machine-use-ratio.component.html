@@ -36,15 +36,15 @@
   </div>
   <div nz-row>
     <nz-table #nzTable [nzData]="machineOeeDataSet" [nzPageSize]="10" [nzScroll]="{y:'300px'}" [nzBordered]=true
-      [nzLoading]="machineOeeDataLoading" [nzFrontPagination]=false [nzShowPagination]=false>
+      [nzLoading]="machineOeeDataLoading" nzSize="small" [nzFrontPagination]=false [nzShowPagination]=false>
       <thead>
         <tr>
           <!-- <th>设备编号</th> -->
           <th nzWidth=100px>设备名称</th>
-          <th nzWidth=100px>运行时间</th>
-          <th nzWidth=100px>待机时间</th>
-          <th nzWidth=100px>停机时间</th>
-          <th nzWidth=100px>报警时间</th>
+          <th nzWidth=100px>运行时间/分钟</th>
+          <th nzWidth=100px>待机时间/分钟</th>
+          <th nzWidth=100px>停机时间/分钟</th>
+          <th nzWidth=100px>报警时间/分钟</th>
         </tr>
       </thead>
       <tbody>
