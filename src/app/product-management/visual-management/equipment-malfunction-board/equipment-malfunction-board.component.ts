@@ -64,7 +64,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     });
   }
 
-  submitQueryForm(): void {
+  submitQueryForm($event): void {
     FormHelper.YGSubmitForm(this.machineFaultRateQueryFormData, this.machineFaultRateQueryForm, dto => {
       this.faultRateLoading = true;
       this.startTime = this.datePipe.transform(dto.StartDate, this.timeFormat);
@@ -75,7 +75,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     });
   }
 
-  resetQueryForm(): void {
+  resetQueryForm($event): void {
     this.machineFaultRateQueryFormData = null;
     this.machineFaultRateQueryForm.reset(new MachineFaultRateQueryDto(null, null));
   }

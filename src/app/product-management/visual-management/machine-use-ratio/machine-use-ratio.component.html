@@ -30,7 +30,7 @@
           <nz-form-control>
             <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!machineOeeQueryForm.valid"><i
                 nz-icon type="search" theme="outline"></i>查询</button>
-            <button nz-button nzType="danger" (click)="resetQueryForm()"><i nz-icon type="reload" theme="outline"></i>清除</button>
+            <button nz-button nzType="danger" (click)="resetQueryForm($event)"><i nz-icon type="reload" theme="outline"></i>清除</button>
           </nz-form-control>
         </nz-form-item>
       </form>
