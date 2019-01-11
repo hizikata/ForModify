@@ -1,5 +1,3 @@
-import { Data } from '@angular/router';
-import { Statement } from '@angular/compiler';
 
 /**
  * 设备信息模型
@@ -343,6 +341,67 @@ export class PieDataTemplate {
 export class ColorTemplate {
     constructor(
         public color: string,
+    ) { }
+}
+
+
+// ------------------设备终端------------------------------------
+
+export class WorkpieceDataQueryDto {
+    constructor(
+        public StartDate: Date,
+        public EndDate: Date,
+    ) { }
+}
+
+
+// -----------------设备故障率看板------------------------------
+/**
+ * 设备故障率
+ */
+export class MachineFaultRateModel {
+    constructor(
+        /**设备编号 */
+        public MachineId: string,
+        /**设备名称 */
+        public MachineName: string,
+        /**开始时间 时间格式*/
+        public StratTime: string,
+        /**结束时间 */
+        public EndTime: string,
+        /**故障时间 单位：分钟 */
+        public FaultTime: number,
+        /**故障代码 */
+        public FailureCode: string,
+        /**故障原因 */
+        public CauseOfFailure: string,
+
+    ) { }
+}
+
+export class MachineFaultRateQueryDto {
+    constructor(
+        public StartDate: Date,
+        public EndDate: Date,
+    ) { }
+}
+
+
+/**
+ * 用于设备故障率图表显示的模型
+ */
+export class MachineFaultRateDisplayDto {
+    constructor(
+        /**机台编号 */
+        public MachineId: string,
+        /**机台名称 */
+        public MachineName: string,
+        /**故障时间 单位：分钟 */
+        public FaultTime: number,
+        /**故障代码 */
+        public FailureCode: string,
+        /**故障原因 */
+        public CauseOfFailure: string,
     ) { }
 }
 

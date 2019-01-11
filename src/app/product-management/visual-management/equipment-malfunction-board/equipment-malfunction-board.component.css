@@ -1,0 +1,17 @@
+.whole-area {
+  height: 100vh;
+  background-color: '#2c343c';
+}
+
+.graph-area {
+  height: 50vh;
+}
+
+.row-one {
+  height: 100%;
+}
+
+.alert-form {
+  background-color: gray;
+  height: 40px;
+}

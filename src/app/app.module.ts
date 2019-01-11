@@ -38,7 +38,7 @@ registerLocaleData(zh);
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },
     // 设置后，访问angular站点，会自动在根节点后面加一个#锚点。再次刷新便不会报404错误了。
-    // { provide: LocationStrategy, useClass: HashLocationStrategy, useValue: zh_CN },
+    { provide: LocationStrategy, useClass: HashLocationStrategy, useValue: zh_CN },
     // 本地策略？？
     // { provide: LocationStrategy, useClass: PathLocationStrategy },
     // { provide: APP_BASE_HREF, useValue: '/' }

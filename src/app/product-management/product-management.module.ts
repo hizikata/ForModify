@@ -15,6 +15,8 @@ import { QRCodeModule } from 'angular2-qrcode';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlanSchedulingComponent } from './sop-management/plan-scheduling/plan-scheduling.component';
 import { StaffEfficiencyDisplayComponent } from './visual-management/staff-efficiency-display/staff-efficiency-display.component';
+import { EquipmentTerminalBoardComponent } from './visual-management/equipment-terminal-board/equipment-terminal-board.component';
+import { EquipmentMalfunctionBoardComponent } from './visual-management/equipment-malfunction-board/equipment-malfunction-board.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { StaffEfficiencyDisplayComponent } from './visual-management/staff-effic
     MachineUseRatioComponent,
     PlanSchedulingComponent,
     StaffEfficiencyDisplayComponent,
+    EquipmentTerminalBoardComponent,
+    EquipmentMalfunctionBoardComponent,
   ],
   imports: [
     CommonModule,

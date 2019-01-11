@@ -29,6 +29,14 @@
           <a routerLink="./MachineUseRadio">
             <span>机台利用率</span></a>
         </div>
+        <div class="header-navigation-item">
+          <a routerLink="./EquipmentTerminalBoard">
+            <span>设备终端</span></a>
+        </div>
+        <div class="header-navigation-item">
+          <a routerLink="./EquipmentMalfunctionBoard">
+            <span>设备故障率</span></a>
+        </div>
       </div>
       <div class="header-user-area">
         <ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'">
@@ -76,10 +84,10 @@
                 <a routerLink="MachineUseRatio"><i nz-icon type="pie-chart" theme="outline"></i>机台利用率看板</a>
               </li>
               <li nz-menu-item>
-                <a routerLink="StaffEfficiency"><i nz-icon type="tool" theme="outline"></i>设备故障看板</a>
+                <a routerLink="EquipmentMalfunctionBoard"><i nz-icon type="tool" theme="outline"></i>设备故障看板</a>
               </li>
               <li nz-menu-item>
-                <a routerLink="StaffEfficiency"><i nz-icon type="solution" theme="outline"></i>人员效率看板</a>
+                <a routerLink="EquipmentTerminalBoard"><i nz-icon type="solution" theme="outline"></i>设备终端</a>
               </li>
 
             </ul>

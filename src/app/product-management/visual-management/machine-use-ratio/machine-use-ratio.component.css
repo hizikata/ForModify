@@ -4,7 +4,12 @@
 }
 
 .row-one {
-  height: 50vh;
+  height: 60vh;
+}
+
+.alert-form {
+  background-color: gray;
+  height: 40px;
 }
 
 .select-row-index {

@@ -9,6 +9,10 @@ import { CncProgramManagementComponent } from '../product-management/sop-managem
 import { PlanSchedulingComponent } from '../product-management/sop-management/plan-scheduling/plan-scheduling.component';
 // tslint:disable-next-line:max-line-length
 import { StaffEfficiencyDisplayComponent } from '../product-management/visual-management/staff-efficiency-display/staff-efficiency-display.component';
+// tslint:disable-next-line:max-line-length
+import { EquipmentMalfunctionBoardComponent } from '../product-management/visual-management/equipment-malfunction-board/equipment-malfunction-board.component';
+// tslint:disable-next-line:max-line-length
+import { EquipmentTerminalBoardComponent } from '../product-management/visual-management/equipment-terminal-board/equipment-terminal-board.component';
 
 export const homeRoutes: Routes = [
   { path: 'MachineUseRatio', component: MachineUseRatioComponent },
@@ -19,7 +23,12 @@ export const homeRoutes: Routes = [
   { path: 'LargeScreenDisplay', component: LargeScreenDisplayComponent },
   // 计划排程
   { path: 'PlanScheduling', component: PlanSchedulingComponent },
+  // 机台利用率看板
   { path: 'MachineUseRadio', component: MachineUseRatioComponent },
+  // 设备终端看板
+  { path: 'EquipmentTerminalBoard', component: EquipmentTerminalBoardComponent },
+  // 设备故障看板
+  { path: 'EquipmentMalfunctionBoard', component: EquipmentMalfunctionBoardComponent },
   // 人员效率看板组件
   { path: 'StaffEfficiency', component: StaffEfficiencyDisplayComponent }
 ];
