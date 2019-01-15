@@ -15,8 +15,8 @@
               <!-- 颜色转换 -->
               <span class="machine-info-title" [style.background-color]="getBackgroundColor(item.State.State)">{{item.Name}}
               </span>
-              <img class="machine-image" alt="机台图片" src="../../../../assets/image/machine.jpg" />
-
+              <img *ngIf="item.IsFanuc" class="machine-image" alt="机台图片" src="../../../../assets/image/fanuc.jpg" />
+              <img *ngIf="!item.IsFanuc" class="machine-image" alt="机台图片" src="../../../../assets/image/machine.jpg" />
             </ng-template>
             <!-- <ng-template #avatarTemplate>
               <nz-avatar nzSrc="../../../../assets/image/machine.jpg"></nz-avatar>
@@ -58,22 +58,22 @@
   <div class="state-bar-area">
 
     <span class="state-display ">
-      <span class="machine-state alart-background-color">报警:</span>
+      <span class="machine-state alart-background-color">报警</span>
       <span class="state-display-text">{{alertCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state standby-background-color">待机:</span>
+      <span class="machine-state standby-background-color">待机</span>
       <span class="state-display-text">{{standbyCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state powerOn-background-color">运行:</span>
+      <span class="machine-state powerOn-background-color">运行</span>
       <span class="state-display-text">{{powerOnCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state powerOff-background-color">停机:</span>
+      <span class="machine-state powerOff-background-color">停机</span>
       <span class="state-display-text">{{powerOffCount}}台/{{entireCount}}台</span>
     </span>
   </div>

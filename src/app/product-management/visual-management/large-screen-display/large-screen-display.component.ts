@@ -30,6 +30,8 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
   alertCount = 0;
 
   isEquipmentListLoading = false;
+  /**法兰克机台编号 */
+  fanucMachineDataset = ['22', '23', '24', '29'];
 
   intervalFc: any;
   constructor(
@@ -98,6 +100,9 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
 
         let powerOnCount = 0, powerOffCount = 0, alertCount = 0, standbyCount = 0;
         this.equipmentInfoDataSet.forEach(item => {
+          if (this.fanucMachineDataset.indexOf(item.MachineId) !== -1) {
+            item.IsFanuc = true;
+          }
           switch (item.State.State) {
             case 0:
               powerOffCount++;
@@ -132,7 +137,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
     );
   }
 
-  getBackgroundColor(state: number) {
+  getBackgroundColor(state: number): string {
     switch (state) {
       case 0:
         return this.powerOff; // 停机背景颜色

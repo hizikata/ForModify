@@ -71,6 +71,7 @@
 }
 
 .machine-state {
+  /* display: inline; */
   padding: 0 1rem;
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.8rem;

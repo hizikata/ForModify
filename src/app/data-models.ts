@@ -4,6 +4,8 @@
  */
 export class EquipmentInfoDto {
     constructor(
+        // 是否是法兰克机台
+        public IsFanuc: Boolean,
         public MachineId: any,
         public Name: string,
         public ErrMsg: string,
