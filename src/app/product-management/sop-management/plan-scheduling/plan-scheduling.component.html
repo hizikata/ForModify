@@ -138,8 +138,8 @@
       <nz-form-item>
         <nz-form-label nzSpan="6" nzFor="OpUser" nzRequired>员工工号:</nz-form-label>
         <nz-form-control nzSpan="18">
-          <nz-select style="width:200px" nzShowSearch formControlName="OpUser" nzPlaceHolder="请输入员工工号" nzAllowClear>
-            <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserId">
+          <nz-select style="width:200px" nzShowSearch formControlName="OpUser" nzPlaceHolder="请选择员工工号" nzAllowClear>
+            <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserName">
             </nz-option>
           </nz-select>
           <nz-form-explain *ngIf="distributeTaskForm.get('OpUser').dirty&&distributeTaskForm.get('OpUser').errors">

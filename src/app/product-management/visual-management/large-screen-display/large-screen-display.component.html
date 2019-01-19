@@ -58,22 +58,22 @@
   <div class="state-bar-area">
 
     <span class="state-display ">
-      <span class="machine-state alart-background-color">报警</span>
+      <span class="machine-state alart-background-color" title='有异常警报'>报警</span>
       <span class="state-display-text">{{alertCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state standby-background-color">待机</span>
+      <span class="machine-state standby-background-color" title="开机未运行">待机</span>
       <span class="state-display-text">{{standbyCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state powerOn-background-color">运行</span>
+      <span class="machine-state powerOn-background-color" title="正常运行">运行</span>
       <span class="state-display-text">{{powerOnCount}}台/{{entireCount}}台</span>
     </span>
 
     <span class="state-display">
-      <span class="machine-state powerOff-background-color">停机</span>
+      <span class="machine-state powerOff-background-color" title="已关机">停机</span>
       <span class="state-display-text">{{powerOffCount}}台/{{entireCount}}台</span>
     </span>
   </div>

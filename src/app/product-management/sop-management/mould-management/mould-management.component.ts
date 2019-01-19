@@ -58,8 +58,10 @@ export class MouldManagementComponent implements OnInit {
       }
       this.mouldModelDataLoading = false;
     }, error => {
+      this.mouldModelDataSet = [];
       const msg = (error as HttpErrorResponse).message;
       MsgHelper.ShowErrorModal(this.modalService, `与远程服务器通讯失败:${msg}`);
+      this.mouldModelDataLoading = false;
     });
   }
 
