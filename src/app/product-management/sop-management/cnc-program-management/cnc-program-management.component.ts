@@ -1,5 +1,5 @@
 import { CNCProgramModel, ValidationBeforeStartProgressDto, WorkpieceModel, MouldModel, LoginUserDto } from './../../../data-models';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MainDataOperationService } from '../../main-data-operation.service';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './cnc-program-management.component.html',
   styleUrls: ['./cnc-program-management.component.css']
 })
-export class CncProgramManagementComponent implements OnInit {
+export class CncProgramManagementComponent implements OnInit, OnChanges {
 
   @Input()
   mouldModelDto: MouldModel = null;
@@ -44,6 +44,27 @@ export class CncProgramManagementComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
+  /**
+   * 监听operatingWorkpieceDto值发生变化时刷新页面
+   * @param changes 变化的值
+   */
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    this.cncDataLoading = true;
+    this.dataOperate.GetCNCprogramList(this.operatingWorkpieceDto.WorkpieceId).subscribe(result => {
+      if (result.length === 0) {
+        MsgHelper.ShowInfoModal(this.modalService, '查询无结果！');
+        this.cncProgramDataSet = [];
+      } else {
+        this.cncProgramDataSet = result;
+      }
+      this.cncDataLoading = false;
+    }, err => {
+      const msg = (err as HttpErrorResponse).message;
+      MsgHelper.ShowErrorModal(this.modalService, `与远程服务器通信失败:${msg}`);
+      this.cncDataLoading = false;
+    });
+  }
+
   ngOnInit() {
 
     this.cncDataLoading = true;
@@ -59,11 +80,12 @@ export class CncProgramManagementComponent implements OnInit {
       } else {
         this.cncProgramDataSet = result;
       }
+      this.cncDataLoading = false;
     }, err => {
       const msg = (err as HttpErrorResponse).message;
       MsgHelper.ShowErrorModal(this.modalService, `与远程服务器通信失败:${msg}`);
+      this.cncDataLoading = false;
     });
-    this.cncDataLoading = false;
   }
 
   initCncProgramMmdel(): CNCProgramModel {

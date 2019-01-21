@@ -186,129 +186,6 @@
           </div>
         </div>
 
-        <!-- 添加程序单对话框 -->
-        <nz-modal [(nzVisible)]="isShowOperateProgramlistModal" [nzTitle]="'添加程序单'" [nzClosable]="false" [nzWidth]="900"
-          [nzContent]="modalProgramContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true"
-          [nzWrapClassName]="''">
-          <ng-template #modalProgramContent>
-            <div>
-              <!-- 表格区域 -->
-              <div *ngIf="isShowOperateProgramlistModal">
-                <form nz-form [formGroup]="addProgramListForm" nzLayout="horizontal">
-                  <nz-form-item>
-                    <nz-form-label nzSpan="6" nzFor="WorkpieceId" nzRequired>程序单编号</nz-form-label>
-                    <nz-form-control nzSpan="18" nzHasFeedback>
-                      <input nz-input autofocus formControlName="WorkpieceId" id="WorkpieceId" name="WorkpieceId"
-                        placeholder="请输入程序单编号">
-                      <nz-form-explain *ngIf="addProgramListForm.get('WorkpieceId').dirty&&addProgramListForm.get('WorkpieceId').errors||addProgramListForm.get('WorkpieceId').pending">
-                        <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('required')">
-                          请输入程序单编号
-                        </ng-container>
-                        <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('format')">
-                          程序单编号必须包含工件编号
-                        </ng-container>
-                        <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('repetition')">
-                          程序单编号重复
-                        </ng-container>
-                        <ng-container *ngIf="addProgramListForm.get('WorkpieceId').pending">
-                          验证中...
-                        </ng-container>
-                      </nz-form-explain>
-                    </nz-form-control>
-                  </nz-form-item>
-                  <nz-form-item>
-
-                    <nz-form-item>
-                      <nz-form-label nzSpan="6" nzFor="WorkpieceName" nzRequired>程序单名称</nz-form-label>
-                      <nz-form-control nzSpan="18">
-                        <input nz-input autofocus formControlName="WorkpieceName" id="WorkpieceName" name="WorkpieceName"
-                          placeholder="请输入程序单名称">
-                        <nz-form-explain *ngIf="addProgramListForm.get('WorkpieceName').dirty&&addProgramListForm.get('WorkpieceName').errors">
-                          程序单名称不能为空
-                        </nz-form-explain>
-                      </nz-form-control>
-                    </nz-form-item>
-
-                    <nz-form-label nzSpan="6" nzFor="MachiningProcess">加工工艺</nz-form-label>
-                    <nz-form-control nzSpan="18">
-                      <input nz-input autofocus formControlName="MachiningProcess" id="MachiningProcess" name="MachiningProcess"
-                        placeholder="请输入加工工艺">
-                    </nz-form-control>
-                  </nz-form-item>
-                  <nz-form-item>
-                    <nz-form-control nzSpan="24">
-                      <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload" [nzName]="loadFileName"
-                        [nzData]="uploadData" (nzChange)="loadStateChange($event)">
-                        <button nz-button>
-                          <i nz-icon type="upload"></i><span>添加SOP</span>
-                        </button>
-                      </nz-upload>
-                    </nz-form-control>
-                  </nz-form-item>
-                  <nz-form-item>
-                    <nz-form-control>
-                      <!-- 手动上传按钮 -->
-                      <button nzSpan="8" style="margin-top: 16px" nz-button [nzType]="'primary'" (click)="handleUpload($event)"
-                        [nzLoading]="uploading" [disabled]="fileList.length === 0">
-                        <i nz-icon type="check" theme="outline"></i>
-                        {{uploading ? '提交中' : '提交'}}
-                      </button>
-                      <button nzSpan="8" nzType="danger" (click)="resetUploadForm()" nz-button><i nz-icon type="reload"
-                          theme="outline"></i>清除</button>
-                      <button nzSpan="8" (click)="OnCloseModal()" nz-button><i nz-icon type="close-circle" theme="outline"></i>关闭</button>
-                    </nz-form-control>
-                  </nz-form-item>
-                </form>
-              </div>
-              <!-- 上传文件后的返回信息 -->
-
-              <div *ngIf="isShowProgramList">
-                <nz-table class="table-striped" #nzTable [nzData]="cncProgramUploadDataSet" [nzBordered]="true"
-                  [nzLoading]="cncProgramUploadDataLoading" [nzShowPagination]="false" [nzFrontPagination]="false"
-                  [nzScroll]="{x:'1300px',y:'250px'}" nzSize="small">
-                  <thead>
-                    <tr>
-                      <th nzWidth="260px" nzLeft="0px">工件编号</th>
-                      <th nzWidth="100px">程序名称</th>
-                      <th nzWidth="100px">状态</th>
-                      <th nzWidth="100px">类型</th>
-                      <th nzWidth="100px">刀具</th>
-                      <th nzWidth="100px">刀具编号</th>
-                      <th nzWidth="100px">刀具长度</th>
-                      <th nzWidth="100px">刀刃长度</th>
-                      <th nzWidth="100px">进给</th>
-                      <th nzWidth="100px">深度</th>
-                      <th nzWidth="120px">余量</th>
-                      <th nzWidth="100px">转速</th>
-                      <th nzWidth="100px">加工时间</th>
-                      <th nzWidth="100px">说明</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of nzTable.data">
-                      <td nzLeft="0px">{{item.WorkpieceId}}</td>
-                      <td>{{item.ProgramNam}}</td>
-                      <td>{{item.State}}</td>
-                      <td>{{item.type}}</td>
-                      <td>{{item.Knife}}</td>
-                      <td>{{item.KnifeNum}}</td>
-                      <td>{{item.KinfeLength}}</td>
-                      <td>{{item.KinfeBladeLength}}</td>
-                      <td>{{item.Feed}}</td>
-                      <td>{{item.Depth}}</td>
-                      <td>{{item.Surplus}}</td>
-                      <td>{{item.Speed}}</td>
-                      <td>{{item.MachiningTime}}</td>
-                      <td>{{item.Remarks}}</td>
-                    </tr>
-                  </tbody>
-                </nz-table>
-              </div>
-            </div>
-
-          </ng-template>
-        </nz-modal>
-
         <!-- 分配任务对话框 -->
         <!-- <nz-modal [(nzVisible)]="isShowDistributeTaskModal" [nzTitle]="'分配任务'" [nzClosable]="false" [nzWidth]="520"
           [nzContent]="modalDistributeTaskContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true"
@@ -373,3 +250,122 @@
     <pdf-viewer [src]="pdfSrc" [render-text]="false" [fit-to-page]="false"></pdf-viewer>
   </div>
 </nz-drawer>
+
+<!-- 添加程序单对话框 -->
+<nz-modal [(nzVisible)]="isShowOperateProgramlistModal" [nzTitle]="'添加程序单'" [nzClosable]="false" [nzWidth]="900"
+  [nzContent]="modalProgramContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+  <ng-template #modalProgramContent>
+    <div>
+      <!-- 表格区域 -->
+      <div *ngIf="isShowOperateProgramlistModal">
+        <form nz-form [formGroup]="addProgramListForm" nzLayout="horizontal">
+          <nz-form-item>
+            <nz-form-label nzSpan="6" nzFor="WorkpieceId" nzRequired>程序单编号</nz-form-label>
+            <nz-form-control nzSpan="18" nzHasFeedback>
+              <input nz-input autofocus formControlName="WorkpieceId" id="WorkpieceId" name="WorkpieceId" placeholder="请输入程序单编号">
+              <nz-form-explain *ngIf="addProgramListForm.get('WorkpieceId').dirty&&addProgramListForm.get('WorkpieceId').errors||addProgramListForm.get('WorkpieceId').pending">
+                <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('required')">
+                  请输入程序单编号
+                </ng-container>
+                <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('format')">
+                  程序单编号必须包含工件编号
+                </ng-container>
+                <ng-container *ngIf="addProgramListForm.get('WorkpieceId').hasError('repetition')">
+                  程序单编号重复
+                </ng-container>
+                <ng-container *ngIf="addProgramListForm.get('WorkpieceId').pending">
+                  验证中...
+                </ng-container>
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzSpan="6" nzFor="WorkpieceName" nzRequired>程序单名称</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input nz-input autofocus formControlName="WorkpieceName" id="WorkpieceName" name="WorkpieceName"
+                  placeholder="请输入程序单名称">
+                <nz-form-explain *ngIf="addProgramListForm.get('WorkpieceName').dirty&&addProgramListForm.get('WorkpieceName').errors">
+                  程序单名称不能为空
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-label nzSpan="6" nzFor="MachiningProcess">加工工艺</nz-form-label>
+            <nz-form-control nzSpan="18">
+              <input nz-input autofocus formControlName="MachiningProcess" id="MachiningProcess" name="MachiningProcess"
+                placeholder="请输入加工工艺">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzSpan="24">
+              <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload" [nzName]="loadFileName" [nzData]="uploadData"
+                (nzChange)="loadStateChange($event)">
+                <button nz-button>
+                  <i nz-icon type="upload"></i><span>添加SOP</span>
+                </button>
+              </nz-upload>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <!-- 手动上传按钮 -->
+              <button nzSpan="8" style="margin-top: 16px" nz-button [nzType]="'primary'" (click)="handleUpload($event)"
+                [nzLoading]="uploading" [disabled]="fileList.length === 0">
+                <i nz-icon type="check" theme="outline"></i>
+                {{uploading ? '提交中' : '提交'}}
+              </button>
+              <button nzSpan="8" nzType="danger" (click)="resetUploadForm()" nz-button><i nz-icon type="reload" theme="outline"></i>清除</button>
+              <button nzSpan="8" (click)="OnCloseModal()" nz-button><i nz-icon type="close-circle" theme="outline"></i>关闭</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+      <!-- 上传文件后的返回信息 -->
+
+      <div *ngIf="isShowProgramList">
+        <nz-table class="table-striped" #nzTable [nzData]="cncProgramUploadDataSet" [nzBordered]="true" [nzLoading]="cncProgramUploadDataLoading"
+          [nzShowPagination]="false" [nzFrontPagination]="false" [nzScroll]="{x:'1300px',y:'250px'}" nzSize="small">
+          <thead>
+            <tr>
+              <th nzWidth="260px" nzLeft="0px">工件编号</th>
+              <th nzWidth="100px">程序名称</th>
+              <th nzWidth="100px">状态</th>
+              <th nzWidth="100px">类型</th>
+              <th nzWidth="100px">刀具</th>
+              <th nzWidth="100px">刀具编号</th>
+              <th nzWidth="100px">刀具长度</th>
+              <th nzWidth="100px">刀刃长度</th>
+              <th nzWidth="100px">进给</th>
+              <th nzWidth="100px">深度</th>
+              <th nzWidth="120px">余量</th>
+              <th nzWidth="100px">转速</th>
+              <th nzWidth="100px">加工时间</th>
+              <th nzWidth="100px">说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of nzTable.data">
+              <td nzLeft="0px">{{item.WorkpieceId}}</td>
+              <td>{{item.ProgramNam}}</td>
+              <td>{{item.State}}</td>
+              <td>{{item.type}}</td>
+              <td>{{item.Knife}}</td>
+              <td>{{item.KnifeNum}}</td>
+              <td>{{item.KinfeLength}}</td>
+              <td>{{item.KinfeBladeLength}}</td>
+              <td>{{item.Feed}}</td>
+              <td>{{item.Depth}}</td>
+              <td>{{item.Surplus}}</td>
+              <td>{{item.Speed}}</td>
+              <td>{{item.MachiningTime}}</td>
+              <td>{{item.Remarks}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+
+  </ng-template>
+</nz-modal>
