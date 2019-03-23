@@ -380,6 +380,9 @@ export class WorkpieceManagementComponent implements OnInit {
     return false;
   }
 
+  /**
+   * 上传SOP文件
+   */
   handleUpload(): void {
     console.log();
     FormHelper.YGSubmitForm(this.addProgramListFormData, this.addProgramListForm, dto => {

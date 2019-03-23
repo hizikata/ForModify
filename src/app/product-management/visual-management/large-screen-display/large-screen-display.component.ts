@@ -36,9 +36,9 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
   intervalFc: any;
   constructor(
     private dataOperate: MainDataOperationService,
-    private modalService: NzModalService,
     private msgService: NzMessageService,
     public datePipe: DatePipe,
+    public nzMessage: NzMessageService,
   ) { }
 
   ngOnInit() {
@@ -66,11 +66,11 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
   private getEquipmentInfo() {
     this.dataOperate.GetMachineInfos().subscribe(result => {
       if (result == null) {
-        MsgHelper.ShowErrorModal(this.modalService, '获取数据失败！');
+        this.nzMessage.error('获取数据失败！');
         this.isEquipmentListLoading = false;
         clearInterval(this.intervalFc);
       } else if (result.length === 0) {
-        MsgHelper.ShowInfoModal(this.modalService, '查询无结果！');
+        this.nzMessage.warning('查询无结果！');
         this.isEquipmentListLoading = false;
         clearInterval(this.intervalFc);
       } else {
@@ -117,7 +117,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
               standbyCount++;
               break;
             default:
-              MsgHelper.ShowErrorModal(this.modalService, `出现不明设备状态代码:${item.State},请检查后重试！`);
+              this.nzMessage.error(`出现不明设备状态代码:${item.State},请检查后重试！`);
               break;
           }
           this.powerOffCount = powerOffCount;
@@ -130,7 +130,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
       this.isEquipmentListLoading = false;
     }, error => {
       const msg = (error as HttpErrorResponse).message;
-      MsgHelper.ShowErrorModal(this.modalService, `与远程服务器通信发生错误,数据刷新终止:\t\n${msg}`);
+      this.nzMessage.error(`与远程服务器通信发生错误,数据刷新终止:\t\n${msg}`);
       this.isEquipmentListLoading = false;
       clearInterval(this.intervalFc);
     }

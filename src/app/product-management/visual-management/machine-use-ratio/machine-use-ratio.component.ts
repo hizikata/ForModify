@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormHelper } from 'src/app/common-use/form-helper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-machine-use-ratio',
@@ -25,6 +25,9 @@ export class MachineUseRatioComponent implements OnInit {
   machineOeeQueryFormData: MachineOeeQuery = null;
 
   selectedRowIndex = 0;
+
+  isShowDataDetailModal = false;
+
   /**将机台分为四组 */
   rowIndexArray = [
     {
@@ -90,7 +93,7 @@ export class MachineUseRatioComponent implements OnInit {
     public dataOperate: MainDataOperationService,
     public datePiepe: DatePipe,
     public fb: FormBuilder,
-    public modalService: NzModalService,
+    public nzMessage: NzMessageService,
   ) {
 
   }
@@ -157,7 +160,7 @@ export class MachineUseRatioComponent implements OnInit {
       this.machineOeeDataLoading = false;
     }, error => {
       const msg = (error as HttpErrorResponse).message;
-      MsgHelper.ShowErrorModal(this.modalService, `查询机台时间时与服务器通信失败${msg}`);
+      this.nzMessage.error(`查询机台时间时与服务器通信失败${msg}`);
     });
   }
 
@@ -207,20 +210,13 @@ export class MachineUseRatioComponent implements OnInit {
         alertTimeArray.push(item.AlertTime);
       });
       const option2 = this.initBarDatasource();
+      option2.xAxis[0].data = machineArray;
+      option2.series[0].data = runTimeArray;
+      option2.series[1].data = standbyTimeArray;
+      option2.series[2].data = poweroffTimeArray;
+      option2.series[3].data = alertTimeArray;
+      this.barDataSource = option2;
 
-      if (this.machineOeeDataSet.length >= index * power + power - 1) {
-        option2.xAxis[0].data = machineArray.slice(index * power, index * power + power);
-        option2.series[0].data = runTimeArray.slice(index * power, index * power + power);
-        option2.series[1].data = standbyTimeArray.slice(index * power, index * power + power);
-        option2.series[2].data = poweroffTimeArray.slice(index * power, index * power + power);
-        option2.series[3].data = alertTimeArray.slice(index * power, index * power + power);
-        this.barDataSource = option2;
-      } else {
-        MsgHelper.ShowErrorModal(this.modalService, '超出Machine数组的边界，请选择其他分组');
-        return;
-      }
-    } else {
-      MsgHelper.ShowErrorModal(this.modalService, '机台耗时数据为空，请先获取机台数据！');
     }
   }
 
@@ -258,12 +254,14 @@ export class MachineUseRatioComponent implements OnInit {
           radius: '55%',
           center: ['50%', '60%'],
           label: {
-            normal: {
-              formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+            normal: { //
+              formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%} \n ',
               backgroundColor: '#eee',
               borderColor: '#aaa',
               borderWidth: 1,
               borderRadius: 4,
+              shadowBlur: 10,
+              shadowOffsetX: 0,
               // shadowBlur:3,
               // shadowOffsetX: 2,
               // shadowOffsetY: 2,
@@ -272,7 +270,7 @@ export class MachineUseRatioComponent implements OnInit {
               rich: {
                 a: {
                   color: '#999',
-                  lineHeight: 22,
+                  // lineHeight: 22,
                   align: 'center'
                 },
                 // abg: {
@@ -290,7 +288,7 @@ export class MachineUseRatioComponent implements OnInit {
                 },
                 b: {
                   fontSize: 16,
-                  lineHeight: 33
+                  lineHeight: 23
                 },
                 per: {
                   color: '#eee',
@@ -364,6 +362,25 @@ export class MachineUseRatioComponent implements OnInit {
           type: 'value'
         }
       ],
+      dataZoom: [// 这个dataZoom组件，若未设置xAxisIndex或yAxisIndex，则默认控制x轴。
+        {
+          type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件（只能拖动 dataZoom 组件导致窗口变化）
+          xAxisIndex: 0, // 控制x轴
+          start: 0, 	// 左边在 10% 的位置
+          end: 25 	// 右边在 60% 的位置
+        },
+        {
+          type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件（能在坐标系内进行拖动，以及用滚轮（或移动触屏上的两指滑动）进行缩放）
+          xAxisIndex: 0, // 控制x轴
+          start: 10,
+          end: 60
+        }
+      ],
+
+
+
+
+
       series: [
         {
           name: '运行',
@@ -393,6 +410,14 @@ export class MachineUseRatioComponent implements OnInit {
       ]
     };
     return barDatasource;
+  }
+
+  showDataDetailModal() {
+    this.isShowDataDetailModal = true;
+  }
+
+  closeDataDetailModal() {
+    this.isShowDataDetailModal = false;
   }
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { LoginUserDto } from 'src/app/data-models';
+import { LoginUserDto, TopMenuDto } from 'src/app/data-models';
 import { CurrentUserDto } from '../../login/current-user-dto';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
 import { FormHelper } from 'src/app/common-use/form-helper';
@@ -26,6 +26,8 @@ export class MainMenuComponent implements OnInit {
   validateLoginUserForm: FormGroup;
   validateLoginUserFormData: LoginUserDto;
 
+  topMenuList: TopMenuDto[] = [];
+
   /**可供验证的用户 */
   loginUserList: LoginUserDto[] = [
     {
@@ -40,7 +42,14 @@ export class MainMenuComponent implements OnInit {
   constructor(
     private modalService: NzModalService,
     private fb: FormBuilder,
-  ) { }
+  ) {
+    this.topMenuList = [{ IsSelect: false, MenuName: '模具目录', RouterLink: './MouldManagement' },
+    { IsSelect: false, MenuName: '计划排程', RouterLink: './PlanScheduling' },
+    { IsSelect: false, MenuName: '大屏展示', RouterLink: './LargeScreenDisplay' },
+    { IsSelect: false, MenuName: '机台利用率', RouterLink: './MachineUseRadio' },
+    { IsSelect: false, MenuName: '设备终端', RouterLink: './EquipmentTerminalBoard' },
+    { IsSelect: false, MenuName: '设备故障率', RouterLink: './EquipmentMalfunctionBoard' },]
+  }
 
   ngOnInit() {
     this.validateLoginUserFormData = null;

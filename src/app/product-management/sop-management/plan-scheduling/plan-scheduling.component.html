@@ -7,7 +7,8 @@
         <nz-alert nzType="info" [nzMessage]="alertTemplate">
           <ng-template #alertTemplate>
             <!-- 检验项查询表单 -->
-            <form nz-form [formGroup]="workpieceQueryForm" (ngSubmit)="submitWorkpieceQueryForm($event)" nzLayout="horizontal">
+            <form nz-form [formGroup]="workpieceQueryForm" (ngSubmit)="submitWorkpieceQueryForm($event)"
+              nzLayout="horizontal">
               <nz-form-item>
                 <!-- <nz-form-label nzSpan="3">项目代码</nz-form-label> -->
                 <nz-form-control nzSpan="3">
@@ -21,7 +22,11 @@
                   <input nz-input formControlName="MouldType" placeholder="接单类型">
                 </nz-form-control>
                 <nz-form-control nzSpan="3">
-                  <input nz-input formControlName="MachineId" placeholder="机台">
+                  <!-- <input nz-input formControlName="MachineId" placeholder="机台"> -->
+                  <nz-select formControlName="MachineId" [nzPlaceHolder]="'机台'">
+                    <nz-option *ngFor="let item of machineDataSet" [nzValue]="item.MachineId" [nzLabel]="item.Name">
+                    </nz-option>
+                  </nz-select>
                 </nz-form-control>
                 <nz-form-control nzSpan="3">
                   <input nz-input formControlName="State" placeholder="当前状态">
@@ -40,9 +45,9 @@
       </div>
       <!-- 信息展示区域 -->
       <div class='display-information-area'>
-        <nz-table class="table-striped" #nzTable [nzData]="workpieceDataSet" [nzBordered]="true" [nzShowPagination]="false"
-          [nzTitle]="tableTitleTemplate" nzSize="small" [nzLoading]="workpieceDataLoading" [nzFrontPagination]="false"
-          [nzScroll]="{x:'1800px', y: '55vh' }">
+        <nz-table class="table-striped" #nzTable [nzData]="workpieceDataSet" [nzBordered]="true"
+          [nzShowPagination]="false" [nzTitle]="tableTitleTemplate" nzSize="small" [nzLoading]="workpieceDataLoading"
+          [nzFrontPagination]="false" [nzScroll]="{x:'1800px', y: '70vh' }">
           <thead (nzSortChange)="sort($event)" nzSingleSort>
             <tr>
               <th nzWidth="80px" nzLeft="0px">查看SOP</th>
@@ -118,11 +123,12 @@
 
 
 <!-- CNC班长分配人员机台 -->
-<nz-modal [(nzVisible)]="isShowDistributeTaskModal" [nzTitle]="'分配任务'" [nzClosable]="false" [nzWidth]="520" [nzContent]="modalDistributeTaskContent"
-  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+<nz-modal [(nzVisible)]="isShowDistributeTaskModal" [nzTitle]="'分配任务'" [nzClosable]="false" [nzWidth]="520"
+  [nzContent]="modalDistributeTaskContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true"
+  [nzWrapClassName]="''">
   <ng-template #modalDistributeTaskContent>
-    <form *ngIf="distributeTaskFormData!==null" nz-form [formGroup]="distributeTaskForm" (ngSubmit)="submitDistributeTaskForm($event)"
-      nzLayout="horizontal">
+    <form *ngIf="distributeTaskFormData!==null" nz-form [formGroup]="distributeTaskForm"
+      (ngSubmit)="submitDistributeTaskForm($event)" nzLayout="horizontal">
       <nz-form-item>
         <nz-form-label nzSpan="6" nzFor="MachineId" nzRequired>机器编号:</nz-form-label>
         <nz-form-control nzSpan="18">
@@ -130,7 +136,8 @@
             <nz-option *ngFor="let item of machineDataSet" [nzLabel]="item.Name" [nzValue]="item.Name">
             </nz-option>
           </nz-select>
-          <nz-form-explain *ngIf="distributeTaskForm.get('MachineId').dirty&&distributeTaskForm.get('MachineId').errors">
+          <nz-form-explain
+            *ngIf="distributeTaskForm.get('MachineId').dirty&&distributeTaskForm.get('MachineId').errors">
             机器编号不能为空
           </nz-form-explain>
         </nz-form-control>
@@ -139,7 +146,8 @@
         <nz-form-label nzSpan="6" nzFor="OpUser" nzRequired>员工工号:</nz-form-label>
         <nz-form-control nzSpan="18">
           <nz-select style="width:200px" nzShowSearch formControlName="OpUser" nzPlaceHolder="请选择员工工号" nzAllowClear>
-            <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}} [nzValue]="item.UserName">
+            <nz-option *ngFor="let item of userDataSet" nzLabel=({{item.UserId}}){{item.UserName}}
+              [nzValue]="item.UserName">
             </nz-option>
           </nz-select>
           <nz-form-explain *ngIf="distributeTaskForm.get('OpUser').dirty&&distributeTaskForm.get('OpUser').errors">
@@ -150,7 +158,8 @@
       <nz-form-item>
         <nz-form-control nzOffset="6">
           <button nzType="primary" type="submit" nz-button [disabled]="!distributeTaskForm.valid">确认</button>
-          <button style="margin-left:4rem;" (click)="resetDistributeTaskForm($event)" nzType="danger" nz-button>关闭</button>
+          <button style="margin-left:4rem;" (click)="resetDistributeTaskForm($event)" nzType="danger"
+            nz-button>关闭</button>
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -158,8 +167,9 @@
 </nz-modal>
 
 <!-- 计划员设定交期和工序 -->
-<nz-modal [(nzVisible)]="isShowEditWorkpieceModal" [nzTitle]="'程序单计划'" [nzWidth]="520" [nzClosable]="false" [nzContent]="modalEditWorkFormContent"
-  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+<nz-modal [(nzVisible)]="isShowEditWorkpieceModal" [nzTitle]="'程序单计划'" [nzWidth]="520" [nzClosable]="false"
+  [nzContent]="modalEditWorkFormContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true"
+  [nzWrapClassName]="''">
   <ng-template #modalEditWorkFormContent>
     <div *ngIf="editWorkpieceForm!==null">
       <form nz-form [formGroup]="editWorkpieceForm" (ngSubmit)="submitEditWorkForm($event, editWorkpieceForm.value)"
@@ -168,7 +178,8 @@
           <nz-form-label nzSpan="6" nzFor="PlanOverMachiningDate" nzRequired>计划完成日期</nz-form-label>
           <nz-form-control nzSpan="18">
             <nz-date-picker formControlName="PlanOverMachiningDate"></nz-date-picker>
-            <nz-form-explain *ngIf="editWorkpieceForm.get('PlanOverMachiningDate').dirty&&editWorkpieceForm.get('PlanOverMachiningDate').errors">
+            <nz-form-explain
+              *ngIf="editWorkpieceForm.get('PlanOverMachiningDate').dirty&&editWorkpieceForm.get('PlanOverMachiningDate').errors">
               计划完成时间不能为空
             </nz-form-explain>
           </nz-form-control>
@@ -183,7 +194,8 @@
               <nz-option *ngFor="let item of processListDataSet" nzLabel={{item.Code}} [nzValue]="item.Code">
               </nz-option>
             </nz-select>
-            <nz-form-explain *ngIf="editWorkpieceForm.get('MachiningProcessId').dirty&&editWorkpieceForm.get('MachiningProcessId').errors">
+            <nz-form-explain
+              *ngIf="editWorkpieceForm.get('MachiningProcessId').dirty&&editWorkpieceForm.get('MachiningProcessId').errors">
               工序代码不能为空
               <!-- <ng-container *ngIf="editWorkpieceForm.get('MachiningProcessId').hasError('required')">
                 工序代码不能为空

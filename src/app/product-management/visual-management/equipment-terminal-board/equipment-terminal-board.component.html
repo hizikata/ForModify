@@ -1,8 +1,50 @@
 <!--设备终端看板 -->
 <div class="whole-area">
-  <div nz-row class="row-one">
-    <div nz-col nzSpan='8'>
+  <div nz-row>
+    <div nz-row class="alert-form" nzType="flex" nzAlign="middle">
+      <!-- <nz-alert nzType="info" [nzMessage]="alertQueryTemplate">
+      <ng-template #alertQueryTemplate> -->
+      <div style="margin-left:8px;" nz-col nzSpan="24">
+        <form nz-form [formGroup]="workpieceDataQueryForm" nzLayout="inline" (ngSubmit)="submitQueryForm($event)">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-date-picker formControlName="StartDate" nzPlaceHolder="选择开始日期"></nz-date-picker>
+              <nz-form-explain
+                *ngIf="workpieceDataQueryForm.get('StartDate').dirty&&workpieceDataQueryForm.get('StartDate').errors">
+                请选择开始日期
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-date-picker formControlName="EndDate" nzPlaceHolder="选择结束日期"></nz-date-picker>
+              <nz-form-explain
+                *ngIf="workpieceDataQueryForm.get('EndDate').dirty&&workpieceDataQueryForm.get('EndDate').errors">
+                请选择结束日期
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!workpieceDataQueryForm.valid"><i
+                  nz-icon type="search" theme="outline"></i>查询</button>
+              <button nz-button nzType="danger" (click)="resetQueryForm($event)"><i nz-icon type="reload"
+                  theme="outline"></i>清除</button>
 
+              <button style="margin-left:20px;" nz-button nzType="dashed" type="button"
+                (click)="showDetailData()">查看数据</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+      <!-- </ng-template>
+    </nz-alert> -->
+    </div>
+
+  </div>
+
+  <div nz-row class="row-one">
+    <div nz-col nzSpan="6">
       <div class="text-info-area">
         <div>
           <span>机台编号:</span>
@@ -22,44 +64,14 @@
       </div>
 
     </div>
-    <div class="row-one" nz-col nzSpan="16" echarts [options]="pieDataSource"></div>
+    <div class="row-one" nz-col nzSpan="18" echarts [options]="pieDataSource"></div>
   </div>
-  <div nz-row>
+</div>
 
-    <div nz-row class="alert-form" nzType="flex" nzAlign="middle">
-      <!-- <nz-alert nzType="info" [nzMessage]="alertQueryTemplate">
-      <ng-template #alertQueryTemplate> -->
-      <div nz-col nzSpan="24">
-        <form nz-form [formGroup]="workpieceDataQueryForm" nzLayout="inline" (ngSubmit)="submitQueryForm($event)">
-          <nz-form-item>
-            <nz-form-control>
-              <nz-date-picker formControlName="StartDate" nzPlaceHolder="选择开始日期" nzShowTime></nz-date-picker>
-              <nz-form-explain *ngIf="workpieceDataQueryForm.get('StartDate').dirty&&workpieceDataQueryForm.get('StartDate').errors">请选择开始日期
-              </nz-form-explain>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control>
-              <nz-date-picker formControlName="EndDate" nzPlaceHolder="选择结束日期" nzShowTime></nz-date-picker>
-              <nz-form-explain *ngIf="workpieceDataQueryForm.get('EndDate').dirty&&workpieceDataQueryForm.get('EndDate').errors">请选择结束日期
-              </nz-form-explain>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control>
-              <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!workpieceDataQueryForm.valid"><i
-                  nz-icon type="search" theme="outline"></i>查询</button>
-              <button nz-button nzType="danger" (click)="resetQueryForm($event)"><i nz-icon type="reload" theme="outline"></i>清除</button>
-            </nz-form-control>
-          </nz-form-item>
-        </form>
-      </div>
-      <!-- </ng-template>
-    </nz-alert> -->
-    </div>
 
-  </div>
-  <div nz-row>
+<nz-drawer [nzVisible]="isShowDetailData" [nzHeight]="400" (nzOnClose)="closeDetailData()" nzPlacement="bottom"
+  [nzClosable]="false">
+  <div>
     <nz-table #nzTable [nzData]="workpieceDataset" nzSize="small" [nzBordered]="true" [nzShowPagination]=false
       [nzFrontPagination]=true>
       <thead>
@@ -93,4 +105,4 @@
       </tbody>
     </nz-table>
   </div>
-</div>
+</nz-drawer>

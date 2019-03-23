@@ -2,7 +2,8 @@
   <nz-header>
     <div class="header-area">
       <div>
-        <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'" (click)="isCollapsed=!isCollapsed"></i>
+        <i class="trigger" nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"
+          (click)="isCollapsed=!isCollapsed"></i>
       </div>
       <!-- 主菜单标题 -->
       <div>
@@ -13,7 +14,7 @@
         <!-- <span class="logo-title">{{productTitle}}</span> -->
       </div>
       <div class="header-navigation-area">
-        <div class="header-navigation-item">
+        <!-- <div class="header-navigation-item">
           <a routerLink="./MouldManagement">
             <span>模具目录</span></a>
         </div>
@@ -36,6 +37,10 @@
         <div class="header-navigation-item">
           <a routerLink="./EquipmentMalfunctionBoard">
             <span>设备故障率</span></a>
+        </div> -->
+        <div class="header-navigation-item" *ngFor="let item of topMenuList" [class.active]="item.IsSelect">
+          <a [routerLink]="item.RouterLink">
+            <span>{{item.MenuName}}</span></a>
         </div>
       </div>
       <div class="header-user-area">
@@ -111,11 +116,12 @@
   </nz-layout>
 </nz-layout>
 <!-- 登录验证 -->
-<nz-modal [(nzVisible)]="isShowValidateLoginUser" [nzTitle]="'用户验证'" [nzWidth]="350" [nzClosable]="false" [nzContent]="modalValidateLoginUserContent"
-  [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true" [nzWrapClassName]="''">
+<nz-modal [(nzVisible)]="isShowValidateLoginUser" [nzTitle]="'用户验证'" [nzWidth]="350" [nzClosable]="false"
+  [nzContent]="modalValidateLoginUserContent" [nzOkText]="null" [nzCancelText]="null" [nzMaskClosable]="true"
+  [nzWrapClassName]="''">
   <ng-template #modalValidateLoginUserContent>
-    <form *ngIf="validateLoginUserFormData!==null" nz-form [formGroup]="validateLoginUserForm" (ngSubmit)="submitValidateLoginUserForm(validateLoginUserForm.value)"
-      nzLayout="horizontal">
+    <form *ngIf="validateLoginUserFormData!==null" nz-form [formGroup]="validateLoginUserForm"
+      (ngSubmit)="submitValidateLoginUserForm(validateLoginUserForm.value)" nzLayout="horizontal">
       <nz-form-item>
         <nz-form-label nzSpan="6" nzFor="UserName" nzRequired>用户名:</nz-form-label>
         <nz-form-control nzSpan="18">
@@ -125,7 +131,8 @@
             </nz-option>
           </nz-select>
 
-          <nz-form-explain *ngIf="validateLoginUserForm.get('UserName').dirty&&validateLoginUserForm.get('UserName').errors">
+          <nz-form-explain
+            *ngIf="validateLoginUserForm.get('UserName').dirty&&validateLoginUserForm.get('UserName').errors">
             用户名不能为空
           </nz-form-explain>
         </nz-form-control>
@@ -134,7 +141,8 @@
         <nz-form-label nzSpan="6" nzFor="Password" nzRequired>密码:</nz-form-label>
         <nz-form-control nzSpan="18">
           <input style="width:200px" autofocus type="password" nz-input formControlName="Password" placeholder="请输入密码">
-          <nz-form-explain *ngIf="validateLoginUserForm.get('Password').dirty&&validateLoginUserForm.get('Password').errors">
+          <nz-form-explain
+            *ngIf="validateLoginUserForm.get('Password').dirty&&validateLoginUserForm.get('Password').errors">
             密码能为空
           </nz-form-explain>
         </nz-form-control>
@@ -142,7 +150,8 @@
       <nz-form-item>
         <nz-form-control nzOffset="6">
           <button nzType="primary" type="submit" nz-button [disabled]="!validateLoginUserForm.valid">登录</button>
-          <button style="margin-left:4rem;" (click)="resetValidateLoginUserForm($event)" nzType="danger" nz-button>关闭</button>
+          <button style="margin-left:4rem;" (click)="resetValidateLoginUserForm($event)" nzType="danger"
+            nz-button>关闭</button>
         </nz-form-control>
       </nz-form-item>
     </form>

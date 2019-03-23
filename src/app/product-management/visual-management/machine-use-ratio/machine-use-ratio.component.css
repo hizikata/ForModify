@@ -1,10 +1,14 @@
 .whole-area {
-  height: 100%;
+  height: calc(100vh - 104px);
   background-color: '#2c343c';
 }
 
 .row-one {
-  height: 60vh;
+  height: 60%;
+}
+
+.row-two {
+  height: 40%;
 }
 
 .alert-form {
@@ -18,4 +22,9 @@
   right: 280px;
   top: 80px;
   z-index: 999;
+}
+
+
+.graph-area {
+  height: 100%;
 }

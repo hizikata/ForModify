@@ -45,7 +45,7 @@
 
  .content-area {
    margin: 0px;
-   overflow-y: hidden;
+
  }
 
  .header-area {
@@ -68,6 +68,10 @@
 
  .header-navigation-item {
    margin-left: 3rem;
+ }
+
+ .header-navigation-item.active {
+   background-color: #10AEFF
  }
 
 

@@ -1,14 +1,21 @@
 .whole-area {
-  height: 100vh;
+  height: calc(100vh - 64px);
+  width: 100%;
   background-color: '#2c343c';
 }
 
 .graph-area {
-  height: 50vh;
+  height: 100%;
 }
 
 .row-one {
-  height: 100%;
+  height: 60%;
+  width: 60%;
+  margin-left: 20%;
+}
+
+.row-two {
+  height: 40%;
 }
 
 .alert-form {

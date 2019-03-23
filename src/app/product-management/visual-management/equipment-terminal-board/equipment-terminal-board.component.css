@@ -1,5 +1,5 @@
 .whole-area {
-  height: 100vh;
+  height: calc(100vh - 104px);
   width: 100vw;
 }
 
@@ -9,12 +9,12 @@
 }
 
 .row-one {
-  height: 50vh;
+  height: 100%;
 }
 
 .text-info-area {
-  margin-left: 16px;
-  margin-top: 20px;
-  font-size: 16px;
+  margin-left: 80px;
+  margin-top: 5px;
+  font-size: 20px;
   font-weight: bold;
 }

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { subDays } from 'date-fns';
 import { MainDataOperationService } from '../../main-data-operation.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -30,12 +30,16 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
 
   machineFaultRateQueryFormData: MachineFaultRateQueryDto = null;
   machineFaultRateQueryForm: FormGroup;
+  faultRateQuerySubmitLoading = false;
+
+  /**是否显示明细数据 */
+  isShowDetailData = false;
 
   constructor(
     public datePipe: DatePipe,
     public dateOperate: MainDataOperationService,
-    public modalService: NzModalService,
     public fb: FormBuilder,
+    public nzMessage: NzMessageService,
   ) { }
 
   ngOnInit() {
@@ -67,6 +71,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
   submitQueryForm($event): void {
     FormHelper.YGSubmitForm(this.machineFaultRateQueryFormData, this.machineFaultRateQueryForm, dto => {
       this.faultRateLoading = true;
+      this.faultRateQuerySubmitLoading = true;
       this.startTime = this.datePipe.transform(dto.StartDate, this.timeFormat);
       console.log(`startTime:${this.startTime}`);
       this.endTime = this.datePipe.transform(dto.EndDate, this.timeFormat);
@@ -87,13 +92,15 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
         this.faultRateDataset = result;
         this.analysisFaultData(this.faultRateDataset);
       } else {
-        MsgHelper.ShowWarningModal(this.modalService, '查询无结果！');
+        this.nzMessage.warning('查询无结果');
       }
       this.faultRateLoading = false;
+      this.faultRateQuerySubmitLoading = false;
     }, error => {
       const msg = (error as HttpErrorResponse).message;
-      MsgHelper.ShowErrorModal(this.modalService, `与服务器通信失败，请联系工程师解决！msg:${msg}`);
+      this.nzMessage.error(`与服务器通信失败，请联系工程师解决！msg:${msg}`);
       this.faultRateLoading = false;
+      this.faultRateQuerySubmitLoading = false;
     });
   }
 
@@ -264,6 +271,14 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
     return new Date(currentYear, currentMonth, 1, 0, 0, 0);
+  }
+
+  showDetailData() {
+    this.isShowDetailData = true;
+  }
+
+  closeDetailData() {
+    this.isShowDetailData = false;
   }
 
 }
