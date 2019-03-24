@@ -112,7 +112,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     dataset.forEach(item => {
       if (this.displayFaultDataset.length === 0) {
         this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-          item.AlertTimeSecond / 60, '', item.StateMsg));
+          item.AlertTimeSecond / 60, '', item.AlermMsg));
       } else {
         const dto = this.displayFaultDataset.find(element => {
           return element.MachineId === item.MachineId;
@@ -121,7 +121,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
           dto.FaultTime += item.AlertTimeSecond / 60;
         } else {
           this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-            item.AlertTimeSecond / 60, '', item.StateMsg));
+            item.AlertTimeSecond / 60, '', item.AlermMsg));
         }
       }
     });

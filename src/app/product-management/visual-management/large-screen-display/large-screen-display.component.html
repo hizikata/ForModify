@@ -3,7 +3,8 @@
 <div class="whole-area">
   <!-- 机器列表 -->
   <div class="machine-list-area">
-    <nz-list [nzDataSource]="equipmentInfoDataSet" [nzLoading]="isEquipmentListLoading" [nzRenderItem]="item" [nzGrid]="{gutter:2, xs: 24, sm: 12, md: 8, lg: 6, xl: 4, xxl: 3}">
+    <nz-list [nzDataSource]="equipmentInfoDataSet" [nzLoading]="isEquipmentListLoading" [nzRenderItem]="item"
+      [nzGrid]="{gutter:2, xs: 24, sm: 12, md: 8, lg: 6, xl: 4, xxl: 3}">
       <ng-template #item let-item>
         <nz-list-item class='nz-list-item' [nzContent]="nzContent">
           <ng-template #nzContent>
@@ -13,7 +14,8 @@
             </nz-card>
             <ng-template #titleTemplate>
               <!-- 颜色转换 -->
-              <span class="machine-info-title" [style.background-color]="getBackgroundColor(item.State.State)">{{item.Name}}
+              <span class="machine-info-title"
+                [style.background-color]="getBackgroundColor(item.MachineState)">{{item.MachineName}}
               </span>
               <img *ngIf="item.IsFanuc" class="machine-image" alt="机台图片" src="../../../../assets/image/fanuc.jpg" />
               <img *ngIf="!item.IsFanuc" class="machine-image" alt="机台图片" src="../../../../assets/image/machine.jpg" />
@@ -27,25 +29,25 @@
               <div style="height:15rem;">
                 <div class="display-info-text">
                   <span class='display-info-title'>模具:</span>
-                  {{item.State.Program}}</div>
+                  {{item.MouldId}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>程序单:</span>
-                  {{item.State.WorkpieceId}}</div>
+                  {{item.ProgramNam}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>程序单进度:</span>
-                  {{item.State.Progress}}</div>
+                  {{item.ProgramIndex}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>开始:</span>
-                  {{item.State.StartTime|date:'MM-dd HH:mm'}}</div>
+                  {{item.ProgramStartTime}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>剩余:</span>
-                  {{item.State.SurplusTime}}</div>
+                  {{item.ProgramSurplusTime}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>耗时:</span>
-                  {{item.State.DisplayTakenTime}}</div>
+                  {{item.ProgramTakenTime}}</div>
                 <div class="display-info-text">
                   <span class='display-info-title'>备刀剩余:</span>
-                  {{item.State.KnifeTime}}</div>
+                  {{item.ProgramKnifeSurplusTime}}</div>
               </div>
             </ng-template>
           </ng-template>

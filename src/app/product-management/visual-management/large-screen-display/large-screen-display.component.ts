@@ -1,3 +1,4 @@
+import { RhBoardModel } from './../../../data-models';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
@@ -14,7 +15,7 @@ import { min } from 'rxjs/operators';
 })
 export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
 
-  equipmentInfoDataSet: EquipmentInfoDto[] = [];
+  equipmentInfoDataSet: RhBoardModel[] = [];
   entireCount = 0;
   /**运行  1*/
   powerOn = '#87d068';
@@ -80,22 +81,24 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
         //   const numberB: number = Number(b['MachineId']);
         //   return numberA > numberB ? 1 : -1;
         // });
-        result.forEach(item => {
-          item.State.StartTime = new Date(item.State.StartTime);
-          item.State.TakenTime = new Date(item.State.TakenTime);
-          const aa = item.State.StartTime.getHours();
-          let day = item.State.TakenTime.getDay();
-          const hour = item.State.TakenTime.getHours();
-          const minute = item.State.TakenTime.getMinutes();
-          if (day > 1) {
-            day = day - 1;
-            item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
-          } else if (day === 1) {
-            item.State.DisplayTakenTime = `${hour}时${minute}分`;
-          }
+        // result.forEach(item => {
+        //   item.State.StartTime = new Date(item.State.StartTime);
+        //   item.State.TakenTime = new Date(item.State.TakenTime);
+        //   const aa = item.State.StartTime.getHours();
+        //   let day = item.State.TakenTime.getDay();
+        //   const hour = item.State.TakenTime.getHours();
+        //   const minute = item.State.TakenTime.getMinutes();
+        //   if (day > 1) {
+        //     day = day - 1;
+        //     item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
+        //   } else if (day === 1) {
+        //     item.State.DisplayTakenTime = `${hour}时${minute}分`;
+        //   }
 
+        // });
+        this.equipmentInfoDataSet = result.sort((a, b) => {
+          return a.RhId - b.RhId;
         });
-        this.equipmentInfoDataSet = result;
         this.entireCount = result.length;
 
         let powerOnCount = 0, powerOffCount = 0, alertCount = 0, standbyCount = 0;
@@ -103,7 +106,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
           if (this.fanucMachineDataset.indexOf(item.MachineId) !== -1) {
             item.IsFanuc = true;
           }
-          switch (item.State.State) {
+          switch (item.MachineState) {
             case 0:
               powerOffCount++;
               break;
@@ -117,7 +120,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
               standbyCount++;
               break;
             default:
-              this.nzMessage.error(`出现不明设备状态代码:${item.State},请检查后重试！`);
+              this.nzMessage.error(`出现不明设备状态代码:${item.MachineState},请检查后重试！`);
               break;
           }
           this.powerOffCount = powerOffCount;

@@ -1,3 +1,4 @@
+import { RhBoardModel } from './../data-models';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiUrlsService } from '../common-use/api-urls.service';
@@ -17,7 +18,7 @@ export class MainDataOperationService {
   /**
    * 获取设备状态信息
    */
-  public GetMachineInfos(): Observable<EquipmentInfoDto[]> {
+  public GetMachineInfos(): Observable<RhBoardModel[]> {
     return this.apiUrl.GetPp('machines');
   }
 

@@ -40,6 +40,7 @@ export class MachineStateModel {
     public State: number,
     /**工件编号 */
     public WorkpieceId: string,
+    /**模具 */
     public Program: string,
     /**开始时间 */
     public StartTime: Date,
@@ -470,7 +471,7 @@ export class MachineAlertRateModel {
     public AlertTime: string,
     public AlertTimeSecond: number,
     /**故障原因*/
-    public StateMsg: string,
+    public AlermMsg: string,
     public RecordDateTime: Date,
     public RecordTimeStamp: Date,
     public SelectDate: string,
@@ -529,5 +530,47 @@ export class MesOrderModel {
     public ProgramMachiningTime: string,
     public ProgramMachineStartTime: Date,
     public ProgramMachineStopTime: Date,
+  ) { }
+}
+
+
+export class RhBoardModel {
+  constructor(
+    public IsFanuc: Boolean,
+    /**看板模型 */
+    public RhId: number,
+    /**设备编号 */
+    public MachineId: string,
+    /**设备名称 */
+    public MachineName: string,
+    public MachineState: number,
+    /**报警信息 */
+    public AlarmMsg: string,
+    /**IP地址 */
+    public IpAdress: string,
+    /**模具编号 */
+    public MouldId: string,
+    /**产品ID */
+    public ProductId: string,
+    /**工件编号 */
+    public WorkpieceId: string,
+    /**加工进度 */
+    public ProgramIndex: string,
+    /**程序名称 */
+    public ProgramNam: string,
+    /**机器内部程序名称 */
+    public MachineProgram: string,
+    /**计划开始时间 */
+    public ProgramPlanMachiningTime: string,
+    /**开始加工时间 */
+    public ProgramStartTime: string,
+    /**加工耗时 */
+    public ProgramTakenTime: string,
+    /**加工剩余时间 */
+    public ProgramSurplusTime: string,
+    /**备刀剩余时间 */
+    public ProgramKnifeSurplusTime: string,
+
+
   ) { }
 }
