@@ -1,9 +1,9 @@
+import { MsgHelper } from './../../../common-use/msg-helper';
 import { CNCProgramModel, ValidationBeforeStartProgressDto, WorkpieceModel, MouldModel, LoginUserDto } from './../../../data-models';
 import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MainDataOperationService } from '../../main-data-operation.service';
-import { MsgHelper } from 'src/app/common-use/msg-helper';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -42,6 +42,7 @@ export class CncProgramManagementComponent implements OnInit, OnChanges {
     private dataOperate: MainDataOperationService,
     private modalService: NzModalService,
     private fb: FormBuilder,
+    private nzMessage: NzMessageService,
   ) { }
 
   /**
@@ -167,7 +168,8 @@ export class CncProgramManagementComponent implements OnInit, OnChanges {
     dto.State = stateString;
     this.dataOperate.EditCncProgram(dto).subscribe(result => {
       if (result.Success) {
-        MsgHelper.ShowSuccessModal(this.modalService, '状态修改成功！');
+        // MsgHelper.ShowSuccessModal(this.modalService, `状态修改成功！${stateString}`);
+        this.nzMessage.success(`状态修改成功！${stateString}`);
       } else {
         MsgHelper.ShowErrorModal(this.modalService, `状态修改失败:${result.ErrorMessage}`);
         dto.State = oldState;

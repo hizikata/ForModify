@@ -8,6 +8,14 @@
         <form nz-form [formGroup]="workpieceDataQueryForm" nzLayout="inline" (ngSubmit)="submitQueryForm($event)">
           <nz-form-item>
             <nz-form-control>
+              <nz-select style="min-width: 100px;" formControlName="Name" [nzPlaceHolder]="'机台'">
+                <nz-option *ngFor="let item of machineDataSet" [nzValue]="item.Name" [nzLabel]="item.Name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
               <nz-date-picker formControlName="StartDate" nzPlaceHolder="选择开始日期"></nz-date-picker>
               <nz-form-explain
                 *ngIf="workpieceDataQueryForm.get('StartDate').dirty&&workpieceDataQueryForm.get('StartDate').errors">

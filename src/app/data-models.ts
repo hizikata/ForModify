@@ -307,22 +307,22 @@ export class ValidationBeforeStartProgressDto {
 /**
  * 机台利用率看板
  */
-export class MachineOeeModel {
-  constructor(
-    /**设备编号 */
-    public MachineId: string,
-    /**设备名称 */
-    public Name: string,
-    /**运行时间 */
-    public RunTime: number,
-    /**待机时间 */
-    public StandbyTime: number,
-    /**停机时间 */
-    public PowerOffTime: number,
-    /**报警时间 */
-    public AlertTime: number,
-  ) { }
-}
+// export class MachineOeeModel {
+//   constructor(
+//     /**设备编号 */
+//     public MachineId: string,
+//     /**设备名称 */
+//     public Name: string,
+//     /**运行时间 */
+//     public RunTime: number,
+//     /**待机时间 */
+//     public StandbyTime: number,
+//     /**停机时间 */
+//     public PowerOffTime: number,
+//     /**报警时间 */
+//     public AlertTime: number,
+//   ) { }
+// }
 
 
 /**
@@ -364,6 +364,8 @@ export class ColorTemplate {
 
 export class WorkpieceDataQueryDto {
   constructor(
+    public MachineId: string,
+    public MachineName: string,
     public StartDate: Date,
     public EndDate: Date,
     public Name: string,
@@ -375,25 +377,25 @@ export class WorkpieceDataQueryDto {
 /**
  * 设备故障率
  */
-export class MachineFaultRateModel {
-  constructor(
-    /**设备编号 */
-    public MachineId: string,
-    /**设备名称 */
-    public MachineName: string,
-    /**开始时间 时间格式*/
-    public StratTime: string,
-    /**结束时间 */
-    public EndTime: string,
-    /**故障时间 单位：分钟 */
-    public FaultTime: number,
-    /**故障代码 */
-    public FailureCode: string,
-    /**故障原因 */
-    public CauseOfFailure: string,
+// export class MachineFaultRateModel {
+//   constructor(
+//     /**设备编号 */
+//     public MachineId: string,
+//     /**设备名称 */
+//     public MachineName: string,
+//     /**开始时间 时间格式*/
+//     public AlertStartTime: string,
+//     /**结束时间 */
+//     public AlertEndTime: string,
+//     /**故障时间 单位：分钟 */
+//     public AlertTime: number,
+//     /**故障代码 */
+//     public StateMsg: string,
+//     /**故障原因 */
+//     public CauseOfFailure: string,
 
-  ) { }
-}
+//   ) { }
+// }
 
 export class MachineFaultRateQueryDto {
   constructor(
@@ -422,3 +424,110 @@ export class MachineFaultRateDisplayDto {
 }
 
 
+/**
+ * 设备开机看板
+ */
+export class MachineRunRateModel {
+  constructor(
+    public MachineId: string,
+    public MachineName: string,
+    /**运行时间 */
+    public RunTime: string,
+    public RunTimeSecond: number,
+    public RunRate: number,
+    /**待机时间 */
+    public StandbyTime: string,
+    public StandbyTimeSecond: number,
+    public StandbyRate: number,
+    /**停机时间 */
+    public PowerOffTime: string,
+    public PowerOffTimeSecond: number,
+    public PowerOffRate: number,
+    /**报警时间 */
+    public AlertTime: string,
+    public AlertTieSecond: number,
+    public AlertRate: number,
+
+    public RecordDateTime: Date,
+    public RecordTimeStamp: string,
+    public selectDate: string,
+  ) { }
+}
+
+
+/**
+ * 设备故障率
+ */
+export class MachineAlertRateModel {
+  constructor(
+    public MachineId: string,
+    public MachineName: string,
+    /**开始时间 */
+    public AlertStartTime: Date,
+    /**结束时间 */
+    public AlertEndTime: Date,
+    /**故障时间 单位：分钟 */
+    public AlertTime: string,
+    public AlertTimeSecond: number,
+    /**故障原因*/
+    public StateMsg: string,
+    public RecordDateTime: Date,
+    public RecordTimeStamp: Date,
+    public SelectDate: string,
+    public selectDate: Date,
+  ) { }
+}
+
+export class MesOrderModel {
+  constructor(
+    /**模具编号+工件编号+CNC编号 应为唯一值 */
+    public OrderId: string,
+    /**模具编号 */
+    public MouldId: string,
+    /**模具名称 */
+    public MouldName: string,
+    /**模具类型 */
+    public MouldType: string,
+    /**模具计划完成时间 */
+    public MouldPlangDate: Date,
+    /**实际完成时间 */
+    public MouldOverMachiningDate: Date,
+    /**计划加工时长 */
+    public MouldPlanMachingTime: string,
+    /**实际加工时长 */
+    public MouldMachineTime: string,
+    /**实际开始时间 */
+    public MouldMachineStartTime: Date,
+    /**实际停止时间 */
+    public MouldMachineStopTime: Date,
+
+    /**工件编号 */
+    public ProductId: string,
+    /**工件名称 */
+    public ProductName: string,
+    /**工件状态 */
+    public ProductState: string,
+
+
+    public WorkpieceId: string,
+    public WorkpieceName: string,
+    public WorkpieceState: string,
+    public WorkpieceMachineId: string,
+    public WorkpieceOpUser: string,
+    public SopFileId: string,
+    public WorkpiecePlangDate: Date,
+    public WorkpieceOverMachiningDate: Date,
+    public WorkpiecePlanMachingTime: string,
+    public WorkpieceMachineTime: string,
+    public WorkpieceMachineStartTime: Date,
+    public WorkpieceMachineStopTime: Date,
+    public ProgramType: string,
+    public ProgramName: string,
+    public ProgramState: string,
+    public ProgramIndex: string,
+    public ProgramPlanMachiningTime: string,
+    public ProgramMachiningTime: string,
+    public ProgramMachineStartTime: Date,
+    public ProgramMachineStopTime: Date,
+  ) { }
+}

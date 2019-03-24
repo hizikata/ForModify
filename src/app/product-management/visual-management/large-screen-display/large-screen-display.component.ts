@@ -66,11 +66,11 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
   private getEquipmentInfo() {
     this.dataOperate.GetMachineInfos().subscribe(result => {
       if (result == null) {
-        this.nzMessage.error('获取数据失败！');
+        this.nzMessage.error('获取机台数据失败！');
         this.isEquipmentListLoading = false;
         clearInterval(this.intervalFc);
       } else if (result.length === 0) {
-        this.nzMessage.warning('查询无结果！');
+        this.nzMessage.warning('查询无机台结果！');
         this.isEquipmentListLoading = false;
         clearInterval(this.intervalFc);
       } else {

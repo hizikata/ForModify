@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiUrlsService } from '../common-use/api-urls.service';
 // tslint:disable-next-line:max-line-length
-import { EquipmentInfoDto, MouldModel, WorkpieceModel, CNCProgramModel, LoginUserDto, MachineModel, ProcessModel, MachineOeeModel, MachineFaultRateModel } from '../data-models';
+import { EquipmentInfoDto, MouldModel, WorkpieceModel, CNCProgramModel, LoginUserDto, MachineModel, ProcessModel, MachineRunRateModel, MachineAlertRateModel } from '../data-models';
 import { OpResult } from '../common-use/op-result';
 
 @Injectable({
@@ -159,7 +159,7 @@ export class MainDataOperationService {
    * @param startTime 起始时间
    * @param endTime 结束时间
    */
-  public GetMachineOee(startTime: string, endTime: string): Observable<MachineOeeModel[]> {
+  public GetMachineOee(startTime: string, endTime: string): Observable<MachineRunRateModel[]> {
     return this.apiUrl.GetPp('Machines/GetMachineOee', { params: { t1: startTime, t2: endTime } });
   }
 
@@ -168,7 +168,7 @@ export class MainDataOperationService {
    * @param startTime 查询开始时间
    * @param endTime 查询结束时间
    */
-  public GetFaultRate(startTime: string, endTime: string): Observable<MachineFaultRateModel[]> {
+  public GetFaultRate(startTime: string, endTime: string): Observable<MachineAlertRateModel[]> {
     return this.apiUrl.GetPp('Machines/GetFaultRate', { params: { t1: startTime, t2: endTime } });
   }
 

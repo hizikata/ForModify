@@ -5,7 +5,7 @@ import { MsgHelper } from 'src/app/common-use/msg-helper';
 import { CNCProgramModel, ValidationBeforeStartProgressDto, WorkpieceModel, AddProgramListDto, LoginUserDto, MouldModel, MachineModel } from 'src/app/data-models';
 import { Validators, FormGroup, FormBuilder, FormControl, ValidationErrors } from '@angular/forms';
 import { OpResult } from 'src/app/common-use/op-result';
-import { UploadFile, NzModalService, isTemplateRef } from 'ng-zorro-antd';
+import { UploadFile, NzModalService, isTemplateRef, NzMessageService } from 'ng-zorro-antd';
 import { FormHelper } from 'src/app/common-use/form-helper';
 import { CurrentUserDto } from 'src/app/home/login/current-user-dto';
 import { ActivatedRoute } from '@angular/router';
@@ -92,6 +92,7 @@ export class WorkpieceManagementComponent implements OnInit {
     private modalService: NzModalService,
     private dataOperate: MainDataOperationService,
     private _activatedRoute: ActivatedRoute,
+    private nzMessage: NzMessageService,
   ) { }
 
   uploading = false;
@@ -429,7 +430,8 @@ export class WorkpieceManagementComponent implements OnInit {
             console.log(JSON.stringify(workPieceDto));
             this.dataOperate.UploadWorkpiece(workPieceDto).subscribe(result => {
               if (result.Success) {
-                MsgHelper.ShowSuccessModal(this.modalService, '工件信息提交成功！');
+                // MsgHelper.ShowSuccessModal(this.modalService, );
+                this.nzMessage.success('工件信息提交成功！');
                 this.dataOperate.GetWorkpieceList(this.mouldModelDto.MouldId).subscribe(r => {
                   this.programInfoDataSet = r;
                 });
@@ -438,7 +440,8 @@ export class WorkpieceManagementComponent implements OnInit {
               }
             }, error => {
               const msg = (error as HttpErrorResponse).message;
-              MsgHelper.ShowErrorModal(this.modalService, `提交工件信息时与远程服务器通信失败:${msg}`);
+              // MsgHelper.ShowErrorModal(this.modalService, `提交工件信息时与远程服务器通信失败:${msg}`);
+              this.nzMessage.error(`提交工件信息时与远程服务器通信失败:${msg}`);
             });
           },
           err => {

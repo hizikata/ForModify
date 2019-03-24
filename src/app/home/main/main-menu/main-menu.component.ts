@@ -48,7 +48,7 @@ export class MainMenuComponent implements OnInit {
     { IsSelect: false, MenuName: '大屏展示', RouterLink: './LargeScreenDisplay' },
     { IsSelect: false, MenuName: '机台利用率', RouterLink: './MachineUseRadio' },
     { IsSelect: false, MenuName: '设备终端', RouterLink: './EquipmentTerminalBoard' },
-    { IsSelect: false, MenuName: '设备故障率', RouterLink: './EquipmentMalfunctionBoard' },]
+    { IsSelect: false, MenuName: '设备故障率', RouterLink: './EquipmentMalfunctionBoard' }];
   }
 
   ngOnInit() {

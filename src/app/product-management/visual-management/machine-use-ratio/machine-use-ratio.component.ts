@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MachineOeeModel, MachineOeeQuery, PieDataTemplate } from 'src/app/data-models';
+import { MachineRunRateModel, MachineOeeQuery, PieDataTemplate } from 'src/app/data-models';
 import { MainDataOperationService } from '../../main-data-operation.service';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 export class MachineUseRatioComponent implements OnInit {
 
   machineOeeDataLoading = false;
-  machineOeeDataSet: MachineOeeModel[] = [];
+  machineOeeDataSet: MachineRunRateModel[] = [];
 
   startDate: string;
   endDate: string;
@@ -27,6 +27,8 @@ export class MachineUseRatioComponent implements OnInit {
   selectedRowIndex = 0;
 
   isShowDataDetailModal = false;
+
+  querySubmitBusy = false;
 
   /**将机台分为四组 */
   rowIndexArray = [
@@ -127,6 +129,9 @@ export class MachineUseRatioComponent implements OnInit {
   submitQueryForm($event): void {
     FormHelper.YGSubmitForm(this.machineOeeQueryFormData, this.machineOeeQueryForm, dto => {
       this.machineOeeDataLoading = true;
+      this.querySubmitBusy = true;
+      this.barDataSource = this.initBarDatasource();
+      this.pieDataSource = this.initPieDataSource();
       this.getDateAndShow(dto);
     });
   }
@@ -156,11 +161,15 @@ export class MachineUseRatioComponent implements OnInit {
         this.getAllKindOfTime();
       } else {
         this.machineOeeDataSet = [];
+        this.nzMessage.warning('获取数据为空！');
       }
       this.machineOeeDataLoading = false;
+      this.querySubmitBusy = false;
     }, error => {
       const msg = (error as HttpErrorResponse).message;
       this.nzMessage.error(`查询机台时间时与服务器通信失败${msg}`);
+      this.machineOeeDataLoading = false;
+      this.querySubmitBusy = false;
     });
   }
 
@@ -168,15 +177,15 @@ export class MachineUseRatioComponent implements OnInit {
     if (this.machineOeeDataSet.length !== 0) {
       let runTime = 0, standbyTime = 0, poweroffTime = 0, alertTime = 0;
       this.machineOeeDataSet.forEach(item => {
-        runTime += item.RunTime;
-        standbyTime += item.StandbyTime;
-        poweroffTime += item.PowerOffTime;
-        alertTime += item.AlertTime;
+        runTime += item.RunTimeSecond / 60;
+        standbyTime += item.StandbyTimeSecond / 60;
+        poweroffTime += item.PowerOffTimeSecond / 60;
+        alertTime += item.AlertTieSecond / 60;
       });
-      this.runTime = runTime;
-      this.standbyTime = standbyTime;
-      this.poweroffTime = poweroffTime;
-      this.alertTime += alertTime;
+      this.runTime = Math.round(runTime);
+      this.standbyTime = Math.round(standbyTime);
+      this.poweroffTime = Math.round(poweroffTime);
+      this.alertTime = Math.round(alertTime);
       this.updatePieDataSource();
       this.updateBarDatasource(0);
     }
@@ -197,20 +206,25 @@ export class MachineUseRatioComponent implements OnInit {
     if (this.machineOeeDataSet !== null && this.machineOeeDataSet.length !== 0) {
       // 每组显示6个数据
       const power = 6;
-      const machineArray = [];
+      const machineArray: string[] = [];
       const runTimeArray = [];
       const standbyTimeArray = [];
       const poweroffTimeArray = [];
       const alertTimeArray = [];
       this.machineOeeDataSet.forEach(item => {
-        machineArray.push(item.Name);
-        runTimeArray.push(item.RunTime);
-        standbyTimeArray.push(item.StandbyTime);
-        poweroffTimeArray.push(item.PowerOffTime);
-        alertTimeArray.push(item.AlertTime);
+        machineArray.push(item.MachineName);
+        // 数据库的时间是以秒来存储的
+        runTimeArray.push(Math.round(item.RunTimeSecond / 60));
+        standbyTimeArray.push(Math.round(item.StandbyTimeSecond / 60));
+        poweroffTimeArray.push(Math.round(item.PowerOffTimeSecond / 60));
+        alertTimeArray.push(Math.round(item.AlertTieSecond / 60));
       });
       const option2 = this.initBarDatasource();
-      option2.xAxis[0].data = machineArray;
+      option2.xAxis[0].data = machineArray.sort((a, b) => {
+        const numA = parseInt(a.substring(3), 10);
+        const numB = parseInt(b.substring(3), 10);
+        return numA - numB;
+      });
       option2.series[0].data = runTimeArray;
       option2.series[1].data = standbyTimeArray;
       option2.series[2].data = poweroffTimeArray;

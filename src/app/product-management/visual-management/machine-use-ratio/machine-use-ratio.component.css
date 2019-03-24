@@ -4,11 +4,13 @@
 }
 
 .row-one {
-  height: 60%;
+  height: 50%;
+  width: 60%;
+  margin-left: 20%;
 }
 
 .row-two {
-  height: 40%;
+  height: 50%;
 }
 
 .alert-form {

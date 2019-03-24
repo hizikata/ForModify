@@ -1,3 +1,4 @@
+import { MachineModel } from './../../../data-models';
 import { Component, OnInit } from '@angular/core';
 import { MainDataOperationService } from '../../main-data-operation.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
@@ -16,6 +17,9 @@ import { FormHelper } from 'src/app/common-use/form-helper';
 })
 export class EquipmentTerminalBoardComponent implements OnInit {
 
+  machineDataSet: MachineModel[] = [];
+
+
   isShowDetailData = false;
 
   /**机台编号 */
@@ -30,6 +34,7 @@ export class EquipmentTerminalBoardComponent implements OnInit {
   /**工件数据列表 */
   workpieceDataset: WorkpieceModel[] = [];
   workpieceDataLoading = false;
+  querySubmitBusy = false;
 
   /**饼图数据源 */
   pieDataSource: any;
@@ -82,6 +87,7 @@ export class EquipmentTerminalBoardComponent implements OnInit {
 
   ngOnInit() {
 
+    this.getAllMachineList();
     const dateNow = new Date(Date.now());
     const startDate = subDays(dateNow, 7);
 
@@ -111,14 +117,30 @@ export class EquipmentTerminalBoardComponent implements OnInit {
     }, 10000);
   }
 
+  /**
+ * 获取机器列表
+ */
+  getAllMachineList(): void {
+    this.dataOperater.GetAllMachineList().subscribe(result => {
+      if (result !== null && result.length !== 0) {
+        // console.log(result);
+        this.machineDataSet = result;
+      }
+    }, err => {
+      const msg = (err as HttpErrorResponse).message;
+      this.nzMessage.error(`与远程服务器通信失败:${msg}`);
+    });
+  }
+
 
 
   initFaultRateQuery(): WorkpieceDataQueryDto {
-    return new WorkpieceDataQueryDto(this.getFirstDayOfMonth(), new Date(Date.now()), null);
+    return new WorkpieceDataQueryDto(null, null, this.getFirstDayOfMonth(), new Date(Date.now()), null);
   }
 
   createMachineOeeQeeryForm(dto: WorkpieceDataQueryDto): void {
     this.workpieceDataQueryForm = this.fb.group({
+      MachineName: [dto.MachineName],
       StartDate: [dto.StartDate, [Validators.required]],
       EndDate: [dto.EndDate, [Validators.required]],
       Name: [dto.Name]

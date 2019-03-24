@@ -21,8 +21,9 @@
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
-          <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!machineOeeQueryForm.valid"><i
-              nz-icon type="search" theme="outline"></i>查询</button>
+          <button style="margin-right:8px;" nz-button nzType="primary" [disabled]="!machineOeeQueryForm.valid"
+            [nzLoading]="querySubmitBusy">
+            <i nz-icon type="search" theme="outline"></i>查询</button>
           <button nz-button nzType="danger" (click)="resetQueryForm($event)"><i nz-icon type="reload"
               theme="outline"></i>清除</button>
           <button style="margin-left:20px;" nz-button nzType="dashed" type="button"
@@ -55,7 +56,7 @@
       <tbody>
         <tr *ngFor="let item of nzTable.data">
           <!-- <td>{{item.MachineId}}</td> -->
-          <td>{{item.Name}}</td>
+          <td>{{item.MachineName}}</td>
           <td>{{item.RunTime}}</td>
           <td>{{item.StandbyTime}}</td>
           <td>{{item.PowerOffTime}}</td>

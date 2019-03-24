@@ -1,6 +1,6 @@
 import { FormHelper } from './../../../common-use/form-helper';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MachineFaultRateModel, MachineFaultRateQueryDto, MachineFaultRateDisplayDto } from './../../../data-models';
+import { MachineAlertRateModel, MachineFaultRateQueryDto, MachineFaultRateDisplayDto } from './../../../data-models';
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { subDays } from 'date-fns';
@@ -20,9 +20,10 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
   endTime: string;
   timeFormat = 'yyyy/MM/dd HH:mm:ss';
 
-  faultRateDataset: MachineFaultRateModel[] = [];
+  faultRateDataset: MachineAlertRateModel[] = [];
   faultRateLoading = false;
 
+  /**折线图显示数据 */
   displayFaultDataset: MachineFaultRateDisplayDto[] = [];
 
   pieDataSource: any;
@@ -76,6 +77,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
       console.log(`startTime:${this.startTime}`);
       this.endTime = this.datePipe.transform(dto.EndDate, this.timeFormat);
       console.log(`endTime:${this.endTime}`);
+      this.displayFaultDataset = [];
       this.getFaultRate();
     });
   }
@@ -93,6 +95,8 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
         this.analysisFaultData(this.faultRateDataset);
       } else {
         this.nzMessage.warning('查询无结果');
+        // 查询无结果时，清空折线图
+        this.lineDatasource = this.initLinesource();
       }
       this.faultRateLoading = false;
       this.faultRateQuerySubmitLoading = false;
@@ -104,20 +108,20 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     });
   }
 
-  analysisFaultData(dataset: MachineFaultRateModel[]): void {
+  analysisFaultData(dataset: MachineAlertRateModel[]): void {
     dataset.forEach(item => {
       if (this.displayFaultDataset.length === 0) {
         this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-          item.FaultTime, item.FailureCode, item.CauseOfFailure));
+          item.AlertTimeSecond / 60, '', item.StateMsg));
       } else {
         const dto = this.displayFaultDataset.find(element => {
           return element.MachineId === item.MachineId;
         });
         if (dto !== undefined) {
-          dto.FaultTime += item.FaultTime;
+          dto.FaultTime += item.AlertTimeSecond / 60;
         } else {
           this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-            item.FaultTime, item.FailureCode, item.CauseOfFailure));
+            item.AlertTimeSecond / 60, '', item.StateMsg));
         }
       }
     });
@@ -134,6 +138,11 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
       const option = this.initLinesource();
       const xAxisArray: string[] = [];
       const faultTimeDataset: number[] = [];
+      dataset = dataset.sort((a, b) => {
+        const numA = parseInt(a.MachineId.trim(), 10);
+        const numB = parseInt(b.MachineId.trim(), 10);
+        return numA - numB;
+      });
       dataset.forEach(item => {
         xAxisArray.push(item.MachineName);
         faultTimeDataset.push(item.FaultTime);
@@ -144,6 +153,9 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     }
   }
 
+  /**
+   * 初始化折线图
+   */
   initLinesource(): any {
     const option = {
       xAxis: {
