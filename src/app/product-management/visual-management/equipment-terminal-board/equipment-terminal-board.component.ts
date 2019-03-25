@@ -1,4 +1,4 @@
-import { MachineModel } from './../../../data-models';
+import { MachineModel, RhBoardModel } from './../../../data-models';
 import { Component, OnInit } from '@angular/core';
 import { MainDataOperationService } from '../../main-data-operation.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
@@ -76,8 +76,8 @@ export class EquipmentTerminalBoardComponent implements OnInit {
   workpieceDataQueryFormData: WorkpieceDataQueryDto = null;
   isEquipmentListLoading = false;
   intervalFc: any;
-  equipmentInfoDataSet: EquipmentInfoDto[] = [];
-  equipmentInfoSet: EquipmentInfoDto[] = [];
+  equipmentInfoDataSet: RhBoardModel[] = [];
+  equipmentInfoSet: RhBoardModel[] = [];
   constructor(
     public dataOperater: MainDataOperationService,
     public nzMessage: NzMessageService,
@@ -157,7 +157,7 @@ export class EquipmentTerminalBoardComponent implements OnInit {
       console.log(`endTime:${this.endTime}`);
       this.machineId = dto.Name;
       console.log('id+++++++++++++' + dto.Name);
-      this.equipmentInfoSet = this.equipmentInfoDataSet.filter(item => item.Name === dto.Name);
+      this.equipmentInfoSet = this.equipmentInfoDataSet.filter(item => item.MachineName === dto.MachineName);
       console.log('aaaa++++' + this.equipmentInfoSet.length);
       this.getWorkpieceListByMachineId();
     });
@@ -241,21 +241,21 @@ export class EquipmentTerminalBoardComponent implements OnInit {
         this.isEquipmentListLoading = false;
         clearInterval(this.intervalFc);
       } else {
-        result.forEach(item => {
-          item.State.StartTime = new Date(item.State.StartTime);
-          item.State.TakenTime = new Date(item.State.TakenTime);
-          const aa = item.State.StartTime.getHours();
-          let day = item.State.TakenTime.getDay();
-          const hour = item.State.TakenTime.getHours();
-          const minute = item.State.TakenTime.getMinutes();
-          if (day > 1) {
-            day = day - 1;
-            item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
-          } else if (day === 1) {
-            item.State.DisplayTakenTime = `${hour}时${minute}分`;
-          }
+        // result.forEach(item => {
+        //   item.State.StartTime = new Date(item.State.StartTime);
+        //   item.State.TakenTime = new Date(item.State.TakenTime);
+        //   const aa = item.State.StartTime.getHours();
+        //   let day = item.State.TakenTime.getDay();
+        //   const hour = item.State.TakenTime.getHours();
+        //   const minute = item.State.TakenTime.getMinutes();
+        //   if (day > 1) {
+        //     day = day - 1;
+        //     item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
+        //   } else if (day === 1) {
+        //     item.State.DisplayTakenTime = `${hour}时${minute}分`;
+        //   }
 
-        });
+        // });
 
       }
       this.isEquipmentListLoading = false;
@@ -436,21 +436,21 @@ export class EquipmentTerminalBoardComponent implements OnInit {
         //   const numberB: number = Number(b['MachineId']);
         //   return numberA > numberB ? 1 : -1;
         // });
-        result.forEach(item => {
-          item.State.StartTime = new Date(item.State.StartTime);
-          item.State.TakenTime = new Date(item.State.TakenTime);
-          const aa = item.State.StartTime.getHours();
-          let day = item.State.TakenTime.getDay();
-          const hour = item.State.TakenTime.getHours();
-          const minute = item.State.TakenTime.getMinutes();
-          if (day > 1) {
-            day = day - 1;
-            item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
-          } else if (day === 1) {
-            item.State.DisplayTakenTime = `${hour}时${minute}分`;
-          }
+        // result.forEach(item => {
+        //   item.State.StartTime = new Date(item.State.StartTime);
+        //   item.State.TakenTime = new Date(item.State.TakenTime);
+        //   const aa = item.State.StartTime.getHours();
+        //   let day = item.State.TakenTime.getDay();
+        //   const hour = item.State.TakenTime.getHours();
+        //   const minute = item.State.TakenTime.getMinutes();
+        //   if (day > 1) {
+        //     day = day - 1;
+        //     item.State.DisplayTakenTime = `${day}天${hour}时${minute}分`;
+        //   } else if (day === 1) {
+        //     item.State.DisplayTakenTime = `${hour}时${minute}分`;
+        //   }
 
-        });
+        // });
         this.equipmentInfoDataSet = result;
       }
       this.isEquipmentListLoading = false;
