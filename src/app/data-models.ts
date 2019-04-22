@@ -471,7 +471,7 @@ export class MachineAlertRateModel {
     public AlertTime: string,
     public AlertTimeSecond: number,
     /**故障原因*/
-    public AlermMsg: string,
+    public AlarmMsg: string,
     public RecordDateTime: Date,
     public RecordTimeStamp: Date,
     public SelectDate: string,
@@ -485,7 +485,7 @@ export class MesOrderModel {
     public OrderId: string,
     /**模具编号 */
     public MouldId: string,
-    /**模具名称 */
+    /**模具名称 使用设备名称排序，名字必须为CNC01而非CNC1*/
     public MouldName: string,
     /**模具类型 */
     public MouldType: string,

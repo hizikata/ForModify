@@ -90,7 +90,9 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
   getFaultRate() {
     this.faultRateLoading = true;
     this.dateOperate.GetFaultRate(this.startTime, this.endTime).subscribe(result => {
+      // console.log(result);
       if (result !== null && result.length !== 0) {
+        result = result.sort((a, b) => a.MachineName > b.MachineName ? 1 : -1);
         this.faultRateDataset = result;
         this.analysisFaultData(this.faultRateDataset);
       } else {
@@ -112,7 +114,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
     dataset.forEach(item => {
       if (this.displayFaultDataset.length === 0) {
         this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-          item.AlertTimeSecond / 60, '', item.AlermMsg));
+          item.AlertTimeSecond / 60, '', item.AlarmMsg));
       } else {
         const dto = this.displayFaultDataset.find(element => {
           return element.MachineId === item.MachineId;
@@ -121,7 +123,7 @@ export class EquipmentMalfunctionBoardComponent implements OnInit {
           dto.FaultTime += item.AlertTimeSecond / 60;
         } else {
           this.displayFaultDataset.push(new MachineFaultRateDisplayDto(item.MachineId, item.MachineName,
-            item.AlertTimeSecond / 60, '', item.AlermMsg));
+            item.AlertTimeSecond / 60, '', item.AlarmMsg));
         }
       }
     });

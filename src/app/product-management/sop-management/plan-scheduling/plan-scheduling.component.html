@@ -1,5 +1,5 @@
 <nz-tabset [(nzSelectedIndex)]="selectedIndex">
-  <nz-tab [nzTitle]="'计划排程 '">
+  <nz-tab [nzTitle]="'计划排程 '" [nzForceRender]="true">
     <!-- 计划排程 -->
     <div class="whole-area">
       <!-- 搜索区域 -->
@@ -24,7 +24,7 @@
                 <nz-form-control nzSpan="3">
                   <!-- <input nz-input formControlName="MachineId" placeholder="机台"> -->
                   <nz-select formControlName="MachineId" [nzPlaceHolder]="'机台'">
-                    <nz-option *ngFor="let item of machineDataSet" [nzValue]="item.MachineId" [nzLabel]="item.Name">
+                    <nz-option *ngFor="let item of machineDataSet" [nzValue]="item.Name" [nzLabel]="item.Name">
                     </nz-option>
                   </nz-select>
                 </nz-form-control>
@@ -80,8 +80,8 @@
               <td>{{item.MouldName}}</td>
               <td>{{item.MouldType}}</td>
               <td>{{item.MouldPlangDate|date:'yyyy-MM-dd'}}</td>
-              <td>{{item.WorkpieceId}}</td>
-              <td>{{item.WorkpieceName}}</td>
+              <td [title]="item.WorkpieceId">{{item.WorkpieceId}}</td>
+              <td [title]="item.WorkpieceName">{{item.WorkpieceName}}</td>
               <td>{{item.PlanOverMachiningDate|date:'yyyy-MM-dd'}}</td>
               <td>{{item.MachiningProcessId}}</td>
               <td>{{item.PlanMachingTime}}</td>

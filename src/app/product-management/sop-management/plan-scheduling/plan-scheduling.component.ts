@@ -107,6 +107,7 @@ export class PlanSchedulingComponent implements OnInit {
     $event.preventDefault();
     this.workpieceDataLoading = true;
     FormHelper.YGSubmitForm(this.workpieceQueryFormData, this.workpieceQueryForm, dto => {
+      console.log(dto);
       this.dataOperate.GetNotOverWorkpieceList().subscribe(result => {
         if (result.length === 0) {
           MsgHelper.ShowInfoModal(this.modalService, '查询无数据！');
@@ -138,7 +139,8 @@ export class PlanSchedulingComponent implements OnInit {
           if (!isNull(dto.MachineId) && dto.MachineId.trim() !== '') {
             dataArray = dataArray.filter(item => {
               if (item.MachineId) {
-                return item.MachineId.indexOf(dto.MachineId) !== -1;
+                // return item.MachineId.indexOf(dto.MachineId) !== -1;
+                return item.MachineId.trim() === dto.MachineId.trim();
               }
             });
           }

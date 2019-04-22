@@ -4,7 +4,7 @@ import { LoginUserDto, TopMenuDto } from 'src/app/data-models';
 import { CurrentUserDto } from '../../login/current-user-dto';
 import { MsgHelper } from 'src/app/common-use/msg-helper';
 import { FormHelper } from 'src/app/common-use/form-helper';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { FullScreen } from 'src/app/common-use/full-screen';
 
 @Component({
@@ -33,7 +33,7 @@ export class MainMenuComponent implements OnInit {
     {
       UserId: 'admin',
       UserName: '管理员',
-      Password: '123321',
+      Password: '123123',
     },
   ];
 
@@ -42,6 +42,7 @@ export class MainMenuComponent implements OnInit {
   constructor(
     private modalService: NzModalService,
     private fb: FormBuilder,
+    private msgService: NzMessageService,
   ) {
     this.topMenuList = [{ IsSelect: false, MenuName: '模具目录', RouterLink: './MouldManagement' },
     { IsSelect: false, MenuName: '计划排程', RouterLink: './PlanScheduling' },
@@ -86,10 +87,12 @@ export class MainMenuComponent implements OnInit {
         CurrentUserDto.CurrentUser = dto;
         CurrentUserDto.IsLogin = true;
         this.currentLoginUserName = CurrentUserDto.CurrentUser.UserName;
-        MsgHelper.ShowSuccessModal(this.modalService, `登录成功，当前用户:${dto.UserName}`);
+        // MsgHelper.ShowSuccessModal(this.modalService, `登录成功，当前用户:${dto.UserName}`);
+        this.msgService.success(`登录成功，当前用户:${dto.UserName}`);
         this.isShowValidateLoginUser = false;
       } else {
-        MsgHelper.ShowErrorModal(this.modalService, '用户名或密码错误！');
+        // MsgHelper.ShowErrorModal(this.modalService, '用户名或密码错误！');
+        this.msgService.error('用户名或密码错误！');
         CurrentUserDto.IsLogin = false;
         this.validateLoginUserFormData = this.initLoginUserDto();
         CurrentUserDto.CurrentUser = this.validateLoginUserFormData;

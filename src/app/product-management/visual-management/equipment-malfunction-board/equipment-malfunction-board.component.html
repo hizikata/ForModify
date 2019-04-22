@@ -43,10 +43,10 @@
   </div>
   <div class="graph-area">
 
-    <div class="row-one" nz-row echarts [options]="pieDataSource"></div>
+    <div class="row-one" nz-row echarts [options]="pieDataSource" [loading]='faultRateLoading'></div>
 
 
-    <div class="row-two" echarts [options]="lineDatasource"></div>
+    <div class="row-two" echarts [options]="lineDatasource" [loading]='faultRateLoading'></div>
 
   </div>
 </div>
@@ -54,7 +54,7 @@
 <nz-drawer [nzVisible]="isShowDetailData" [nzHeight]="400" (nzOnClose)="closeDetailData()" nzPlacement="bottom"
   [nzClosable]="false">
   <div nz-row>
-    <nz-table #nzTable [nzData]="faultRateDataset" [nzScroll]="{y:'300px'}" [nzBordered]=true
+    <nz-table #nzMalfuncitonTable [nzData]="faultRateDataset" [nzScroll]="{y:'300px'}" [nzBordered]=true
       [nzLoading]="faultRateLoading" nzSize="small" [nzFrontPagination]=false [nzShowPagination]=false>
       <thead>
         <tr>
@@ -69,7 +69,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of nzTable.data">
+        <tr *ngFor="let item of nzMalfuncitonTable.data">
           <!-- <td>{{item.MachineId}}</td> -->
           <td>{{item.MachineId}}</td>
           <td>{{item.MachineName}}</td>
@@ -77,7 +77,7 @@
           <td>{{item.AlertEndTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>{{item.AlertTime}}</td>
           <!-- <td>{{item.FailureCode}}</td> -->
-          <td>{{item.AlermMsg}}</td>
+          <td>{{item.AlarmMsg}}</td>
         </tr>
       </tbody>
     </nz-table>
