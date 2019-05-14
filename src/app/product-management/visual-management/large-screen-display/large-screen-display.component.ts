@@ -35,6 +35,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
   fanucMachineDataset = ['22', '23', '24', '29'];
 
   intervalFc: any;
+
   constructor(
     private dataOperate: MainDataOperationService,
     private msgService: NzMessageService,
@@ -51,7 +52,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
       // this.isEquipmentListLoading = true;
       /**获取设备信息 */
       this.getEquipmentInfo();
-    }, 10000);
+    }, 60000);
   }
   /**
    * 在组件销毁前停止定时器，取消订阅（？）

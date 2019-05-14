@@ -10,3 +10,4 @@ dist
 
 package-lock.json
 .vscode/launch.json
+dist.zip

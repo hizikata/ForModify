@@ -246,7 +246,7 @@ export class PlanSchedulingComponent implements OnInit {
   OnProgramOperation(dto: WorkpieceModel): void {
     if (dto.SopFileId !== null && dto.SopFileId.trim() !== '') {
       this.pdfSrc = this.dataOperate.GetSopFileUrl() + dto.SopFileId;
-      // console.log(this.pdfSrc);
+      console.log(this.pdfSrc);
     }
     this.isShowPdfModal = true;
   }
