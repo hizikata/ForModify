@@ -16,6 +16,7 @@ import { min } from 'rxjs/operators';
 export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
 
   equipmentInfoDataSet: RhBoardModel[] = [];
+  /**总数量 */
   entireCount = 0;
   /**运行  1*/
   powerOn = '#87d068';
@@ -47,7 +48,7 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
     this.isEquipmentListLoading = true;
     this.getEquipmentInfo();
 
-    // 每个十秒获取一次数据, 10000);
+    // 每一分钟获取一次数据, 60000);
     this.intervalFc = setInterval(() => {
       // this.isEquipmentListLoading = true;
       /**获取设备信息 */
@@ -100,6 +101,8 @@ export class LargeScreenDisplayComponent implements OnInit, OnDestroy {
         this.equipmentInfoDataSet = result.sort((a, b) => {
           return a.RhId - b.RhId;
         });
+        // 在控制台输出大屏机台列表信息
+        console.log(this.equipmentInfoDataSet);
         this.entireCount = result.length;
 
         let powerOnCount = 0, powerOffCount = 0, alertCount = 0, standbyCount = 0;
